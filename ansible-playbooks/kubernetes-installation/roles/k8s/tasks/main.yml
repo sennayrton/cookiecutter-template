@@ -1,0 +1,18 @@
+---
+# tasks file for Kubernetes nodes
+
+- name: Instala containerd y nerdctl (común todos los nodos)
+  import_tasks: install-nerdctl.yaml
+  tags: nerdctl-install
+
+- name: Instala kubeadm, kubelet y kubectl (común todos los nodos)
+  import_tasks: install-kube.yaml
+  tags: kube-install
+
+- name: Configurando imagenes ( solo en un master )
+  import_tasks: config-images.yaml
+  tags: config-images
+
+- name: Configurando imagenes ( solo en un master )
+  import_tasks: join-workers.yaml
+  tags: join-workers

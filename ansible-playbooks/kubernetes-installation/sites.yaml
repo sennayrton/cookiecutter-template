@@ -1,0 +1,54 @@
+---
+- hosts: all
+  become: true
+  become_method: sudo
+  roles:
+    - common
+
+- hosts: registry
+  become: true
+  become_method: sudo
+  roles:
+    - registry
+
+- hosts: k8s
+  become: true
+  become_method: sudo
+  roles:
+    - k8s
+
+- hosts: etcd
+  become: true
+  become_method: sudo
+  roles:
+    - etcd
+
+#- hosts: masters
+#  become: true
+#  become_method: sudo
+#  roles:
+#    - etcd
+
+- hosts: workers
+  become: true
+  become_method: sudo
+  roles:
+    - worker
+
+- hosts: bastion
+  become: true
+  become_method: sudo
+  roles:
+    - bastion
+    
+- hosts: balanceador
+  become: true
+  become_method: sudo
+  roles:
+    - balanceador
+
+- hosts: master
+  become: true
+  become_method: sudo
+  roles:
+    - master

@@ -1,0 +1,25 @@
+---
+
+## Necesario kubectl instalado y configurado previamente
+- name: Extraemos el contenido del fichero de tridentctl
+  unarchive:
+    src: "files/trident-installer-22.04.0.tar.gz"
+    dest: "/tmp"
+    owner: root
+    group: root
+    mode: '0744'
+
+- name: Movemos el binario de tridentctl a /usr/local/bin/
+  copy:
+    src: "/tmp/trident-installer/tridentctl"
+    dest: "/usr/local/bin/tridentctl"
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: yes
+
+
+- name: Borramos los ficheros generados en /tmp/trident-installer/
+  file:
+    state: absent
+    path: /tmp/trident-installer/

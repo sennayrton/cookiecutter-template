@@ -1,0 +1,15 @@
+---
+# handler for haproxy
+- name: restart haproxy
+  systemd:
+    name: haproxy
+    state: restarted
+  become: yes
+
+# handler for keeplived
+- name: restart keepalived
+  systemd:
+    name: keepalived
+    state: restarted
+  become: yes
+

@@ -1,0 +1,16 @@
+---
+- name: Extraemos el contenido del fichero
+  unarchive:
+    src: "files/cqlsh/cqlsh.tar.gz"
+    dest: "/tmp"
+    owner: root
+    group: root
+    mode: '0744'
+
+- name: Ejecutamos el script de instalación de cqlsh (también instala sus dependencias)
+  script: "files/cqlsh/install-cqlsh.sh"
+
+- name: Borramos los ficheros generados en /tmp/ansible-offline/
+  file:
+    state: absent
+    path: /tmp/cqlsh/

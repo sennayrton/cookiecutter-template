@@ -1,0 +1,13 @@
+HTTP/1.1 400 Bad Request
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+   <body>
+      <h1>400 Bad Request</h1>
+      <p>Malformed request syntax, invalid request
+   message framing or deceptive request routing.</p>
+   </body>
+</html>

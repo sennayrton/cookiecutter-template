@@ -1,0 +1,182 @@
+---
+
+- name: Creamos directorio /tmp/git si no existe
+  file:
+    path: "/tmp/git/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Creamos directorio /tmp/openssl si no existe
+  file:
+    path: "/tmp/openssl/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Creamos directorio /tmp/nfs-utils si no existe
+  file:
+    path: "/tmp/nfs-utils/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Creamos directorio /tmp/tcpdump si no existe
+  file:
+    path: "/tmp/tcpdump/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Creamos directorio /tmp/psql si no existe
+  file:
+    path: "/tmp/psql/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Creamos directorio /tmp/yum-utils si no existe
+  file:
+    path: "/tmp/yum-utils/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Movemos los paquetes sin dependencias a /tmp para instalar
+  copy:
+    src: "files/common/{{ item }}"
+    dest: "/tmp/{{ item }}"
+    owner: root
+    group: root
+    mode: '0744'
+  with_items: "{{ common }}"
+
+- name: Movemos los paquetes de openssl a /tmp/openssl para instalar
+  copy:
+    src: "files/common/openssl/{{ item }}"
+    dest: "/tmp/openssl/{{ item }}"
+    owner: root
+    group: root
+    mode: '0744'
+  with_items: "{{ openssl }}"
+
+- name: Movemos los paquetes de nfs-utils a /tmp/nfs-utils para instalar
+  copy:
+    src: "files/common/nfs-utils/{{ item }}"
+    dest: "/tmp/nfs-utils/{{ item }}"
+    owner: root
+    group: root
+    mode: '0744'
+  with_items: "{{ nfsutils }}"
+
+
+- name: Movemos los paquetes de tcpdump a /tmp/tcpdump para instalar
+  copy:
+    src: "files/common/tcpdump/{{ item }}"
+    dest: "/tmp/tcpdump/{{ item }}"
+    owner: root
+    group: root
+    mode: '0744'
+  with_items: "{{ tcpdump }}"
+
+- name: Movemos los paquetes de psql a /tmp/psql para instalar
+  copy:
+    src: "files/common/psql/{{ item }}"
+    dest: "/tmp/psql/{{ item }}"
+    owner: root
+    group: root
+    mode: '0744'
+  with_items: "{{ psql }}"
+
+- name: Movemos los paquetes de yum-utils a /tmp/yum-utils para instalar
+  copy:
+    src: "files/common/yum-utils/{{ item }}"
+    dest: "/tmp/yum-utils/{{ item }}"
+    owner: root
+    group: root
+    mode: '0744'
+  with_items: "{{ yumutils }}"
+
+- name: Instalamos los paquetes comunes sin dependencias ya presentes en la máquina en /tmp
+  yum:
+    name: "/tmp/{{ item }}"
+    state: present
+    disablerepo: "*"
+  with_items: "{{ common }}"
+
+- name: Instalamos openssl con los paquetes en /tmp/openssl
+  yum:
+    name: "/tmp/openssl/{{ item }}"
+    state: present
+    disablerepo: "*"
+  with_items: "{{ openssl }}"
+
+- name: Instalamos nfs-utils con los paquetes en /tmp/nfs-utils
+  yum:
+    name: "/tmp/nfs-utils/{{ item }}"
+    state: present
+    disablerepo: "*"
+  with_items: "{{ nfsutils }}"
+
+- name: Instalamos tcpdump con los paquetes en /tmp/tcpdump
+  yum:
+    name: "/tmp/tcpdump/{{ item }}"
+    state: present
+    disablerepo: "*"
+  with_items: "{{ tcpdump }}"
+
+- name: Instalamos psql con los paquetes en /tmp/psql
+  yum:
+    name: "/tmp/psql/{{ item }}"
+    state: present
+    disablerepo: "*"
+  with_items: "{{ psql }}"
+
+- name: Instalamos yum-utils con los paquetes en /tmp/yum-utils
+  yum:
+    name: "/tmp/yum-utils/{{ item }}"
+    state: present
+    disablerepo: "*"
+  with_items: "{{ yumutils }}"
+
+- name: Removemos los paquetes ya instalados de /tmp/git/
+  file:
+    path: "/tmp/git/"
+    state: absent
+
+- name: Removemos los paquetes ya instalados de /tmp
+  file:
+    path: "/tmp/{{ item }}"
+    state: absent
+  with_items: "{{ common }}"
+
+- name: Removemos los paquetes de openssl ya instalados de /tmp/openssl
+  file:
+    path: "/tmp/openssl/"
+    state: absent
+
+- name: Removemos los paquetes de nfs-utils ya instalados de /tmp/nfs-utils
+  file:
+    path: "/tmp/nfs-utils/"
+    state: absent
+
+- name: Removemos los paquetes de tcpdump ya instalados de /tmp/tcpdump
+  file:
+    path: "/tmp/tcpdump/"
+    state: absent
+
+- name: Removemos los paquetes de psql ya instalados de /tmp/psql
+  file:
+    path: "/tmp/psql/"
+    state: absent
+
+- name: Removemos los paquetes de yum-utils ya instalados de /tmp/yum-utils
+  file:
+    path: "/tmp/yum-utils/"
+    state: absent

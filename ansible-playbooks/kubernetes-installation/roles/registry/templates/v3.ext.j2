@@ -1,0 +1,10 @@
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1={{ registry_domain }}
+DNS.2={{ hostname_registry }}
+IP:{{ ip_registry }}

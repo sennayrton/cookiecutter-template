@@ -1,0 +1,10 @@
+---
+# tasks file for Docker Registry
+
+- name: Instala las dependencias de Docker , docker-ce y docker-compose
+  import_tasks: install-docker.yaml
+  tags: docker-install
+
+- name: Instala Harbor y lo configura con TLS
+  import_tasks: install-harbor.yaml
+  tags: harbor-install

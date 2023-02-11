@@ -1,0 +1,10 @@
+---
+# tasks file for Kubernetes nodes
+
+- name: Configurar etcd
+  import_tasks: configure-etcd.yaml
+  tags: etcd_config
+
+- name: Generar certificados
+  import_tasks: certs.yaml
+  tags: etcd_certs

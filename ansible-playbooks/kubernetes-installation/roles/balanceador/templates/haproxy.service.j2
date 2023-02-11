@@ -1,0 +1,22 @@
+[Unit]
+Description=HAProxy Load Balancer
+Documentation=man:haproxy(1)
+Documentation=file:/usr/local/{{ entorno }}/{{ user_home_dir }}/haproxy/configuration.txt.gz
+After=network.target rsyslog.service
+
+[Service]
+EnvironmentFile=-/usr/local/{{ entorno }}/{{ user_home_dir }}/default/haproxy
+Environment="CONFIG=/usr/local/{{ entorno }}/{{ user_home_dir }}/haproxy/haproxy.cfg" "PIDFILE=/usr/local/{{ entorno }}/{{ user_home_dir }}/haproxy/haproxy.pid"
+ExecStartPre=/usr/sbin/haproxy -f $CONFIG -c -q $EXTRAOPTS
+ExecStart=/usr/sbin/haproxy -Ws -f $CONFIG -p $PIDFILE $EXTRAOPTS
+ExecReload=/usr/sbin/haproxy -f $CONFIG -c -q $EXTRAOPTS
+ExecReload=/bin/kill -USR2 $MAINPID
+KillMode=mixed
+Restart=always
+SuccessExitStatus=143
+Type=notify
+User=haproxy
+Group={{ user_group }}
+
+[Install]
+WantedBy=multi-user.target

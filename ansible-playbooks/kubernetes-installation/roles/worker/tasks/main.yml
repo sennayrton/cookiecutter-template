@@ -1,0 +1,11 @@
+---
+# tasks file for Kubernetes nodes
+
+- name: Configurar workers
+  import_tasks: configure-worker.yaml
+  tags: worker-config
+
+#- name: Añadir los workers al cluster
+#  import_tasks: join-nodes.yaml
+#  tags: join-nodes
+

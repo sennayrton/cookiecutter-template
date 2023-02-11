@@ -1,0 +1,17 @@
+---
+# tasks file for kubernetes
+
+- name: configurar /etc/hosts de todas las maquinas
+  import_tasks: config-etchosts.yaml
+
+- name: Instalar paquetes common
+  import_tasks: common-packet.yaml
+  tags: common-packet
+
+- name: Instalar Python 3.7.11
+  import_tasks: install-python.yaml
+  tags: python-packet
+
+- name: Instalar cqlsh 6.0.0
+  import_tasks: cqlsh-packet.yaml
+  tags: cqlsh-packet

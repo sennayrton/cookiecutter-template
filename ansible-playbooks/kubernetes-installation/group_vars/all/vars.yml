@@ -1,0 +1,59 @@
+---
+# ansible
+ansible_user: root
+ansible_ssh_pass: "{{ vault_ansible_ssh_pass }}"
+registry_user: "{{ vault_registry_user }}"
+registry_pass: "{{ vault_registry_pass }}"
+
+# entorno : cambiar para instalar cada cluster
+entorno: pr
+
+# comun para todas las maquinas , realmente luego será kamino el user_home_dir , xpkami01 el user_name y gpkami01 el user_group
+user_name: kuka
+user_group: kuka
+user_home_dir: kuka
+
+# hostnames
+hostname_registry: loadbalancer.cin
+hostname_loadbalancer: loadbalancer
+hostname_master1: master1 
+hostname_worker1: worker1
+hostname_etcd1: etcd1
+hostname_etcd2: etcd2 
+hostname_etcd3: etcd3 
+
+# IP's 
+ip_registry: 192.168.112.139
+ip_loadbalancer: 192.168.112.139
+ip_master1: 192.168.112.137
+ip_worker1: 192.168.112.138
+ip_etcd1: 192.168.112.150
+ip_etcd2: 192.168.112.151
+ip_etcd3: 192.168.112.152
+ip_vip: 192.168.112.142
+
+# Proxy Docker Hub
+proxy_docker_hub: proxy_docker_hub
+
+# Registry domain
+registry_domain: loadbalancer.cin
+
+# Registry Port
+registry_port: 443
+
+# Registry admin password
+harbor_admin_password: cylonb0x
+
+# Proxy
+proxy: "http://10.200.140.230:80"
+
+# Image versions
+image_pause_version: "3.6"
+etcd_image_version: "3.5.1-0"
+
+# Kubernetes version
+kubernetes_version: 1.23.6
+
+# POD CIDR
+pod_network_cidr: 10.20.0.0/16
+

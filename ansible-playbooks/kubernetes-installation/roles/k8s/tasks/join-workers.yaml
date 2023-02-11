@@ -1,0 +1,26 @@
+---
+
+- name: Join worker nodes
+  hosts: k8s
+  tasks:
+
+  - name: Generate new token to join work node
+    shell: kubeadm token create --print-join-command --ttl 30m
+    register: kubeadm_join_output
+    delegate_to: "{{ groups['masters'][0] }}"
+    run_once: True
+    become: yes
+
+  - set_fact:
+      kubeadm_join_command: "{{ kubeadm_join_output.stdout }}"
+
+  - debug: var=kubeadm_join_command
+  - name: Check if kubelet.conf exists
+    stat:
+      path: "/etc/kubernetes/kubelet.conf"
+    register: kubelet_conf
+
+  - name: Join nodes to the cluster
+    shell: "{{ kubeadm_join_command }}"
+    become: yes
+    when: not kubelet_conf.stat.exists

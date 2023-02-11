@@ -1,0 +1,68 @@
+---
+common:
+  - zip-3.0-11.el7.x86_64.rpm
+  - gzip-1.5-10.el7.x86_64.rpm
+  - unzip-6.0-24.el7_9.x86_64.rpm
+  - htop-2.2.0-3.el7.x86_64.rpm
+  - rsync-3.1.2-10.el7.x86_64.rpm
+  - wget-1.14-18.el7_6.1.x86_64.rpm
+  - nano-2.3.1-10.el7.x86_64.rpm
+  - telnet-0.17-66.el7.x86_64.rpm
+  - open-vm-tools-11.0.5-3.el7_9.3.x86_64.rpm
+  - net-tools-2.0-0.25.20131004git.el7.x86_64.rpm
+  - sshpass-1.06-2.el7.x86_64.rpm
+
+git:
+  - perl-Git-1.8.3.1-23.el7_8.noarch.rpm
+  - git-1.8.3.1-23.el7_8.x86_64.rpm
+  - git-lfs-3.0.2-1.el7.x86_64.rpm
+
+openssl:
+  - openssl-libs-1.0.2k-22.el7_9.x86_64.rpm
+  - openssl-1.0.2k-22.el7_9.x86_64.rpm
+
+nfsutils:
+  - gssproxy-0.7.0-30.el7_9.x86_64.rpm
+  - keyutils-1.5.8-3.el7.x86_64.rpm
+  - libbasicobjects-0.1.1-32.el7.x86_64.rpm
+  - libcollection-0.7.0-32.el7.x86_64.rpm
+  - libevent-2.0.21-4.el7.x86_64.rpm
+  - libini_config-1.3.1-32.el7.x86_64.rpm
+  - libnfsidmap-0.25-19.el7.x86_64.rpm
+  - libpath_utils-0.2.1-32.el7.x86_64.rpm
+  - libref_array-0.1.5-32.el7.x86_64.rpm
+  - libtirpc-0.2.4-0.16.el7.x86_64.rpm
+  - libverto-libevent-0.2.5-4.el7.x86_64.rpm
+  - nfs-utils-1.3.0-0.68.el7.2.x86_64.rpm
+  - quota-4.01-19.el7.x86_64.rpm
+  - quota-nls-4.01-19.el7.noarch.rpm
+  - rpcbind-0.2.0-49.el7.x86_64.rpm
+  - tcp_wrappers-7.6-77.el7.x86_64.rpm
+  - nfs-utils-1.3.0-0.68.el7.2.x86_64.rpm
+
+tcpdump:
+  - libpcap-1.5.3-12.el7.x86_64.rpm
+  - tcpdump-4.9.2-4.el7_7.1.x86_64.rpm
+
+psql:
+  - krb5-libs-1.15.1-51.el7_9.x86_64.rpm
+  - nspr-4.32.0-1.el7_9.x86_64.rpm
+  - nss-3.67.0-4.el7_9.x86_64.rpm
+  - nss-softokn-3.67.0-3.el7_9.x86_64.rpm
+  - nss-softokn-freebl-3.67.0-3.el7_9.x86_64.rpm
+  - nss-sysinit-3.67.0-4.el7_9.x86_64.rpm
+  - nss-tools-3.67.0-4.el7_9.x86_64.rpm
+  - nss-util-3.67.0-1.el7_9.x86_64.rpm
+  - zlib-1.2.7-19.el7_9.x86_64.rpm
+  - postgresql-libs-9.2.24-7.el7_9.x86_64.rpm
+  - postgresql-9.2.24-7.el7_9.x86_64.rpm
+
+yumutils:
+  - python-chardet-2.2.1-3.el7.noarch.rpm
+  - python-kitchen-1.1.1-5.el7.noarch.rpm
+  - yum-utils-1.1.31-54.el7_8.noarch.rpm
+
+
+
+
+

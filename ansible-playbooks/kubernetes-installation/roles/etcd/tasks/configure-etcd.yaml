@@ -1,0 +1,34 @@
+---
+
+- name: Habilita los puertos 2379 y 2380 TCP
+  firewalld:
+    port: 2379-2380/tcp
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Crea el directorio /usr/local/pr/{{ entorno }}/{{ user_home_dir }}/etcd si no existe
+  file:
+    path: /usr/local/pr/{{ entorno }}/{{ user_home_dir }}/etcd
+    state: directory
+    owner: root 
+    group: root
+    mode: u=rwx
+  become: yes
+  
+- name: Crea el directorio /etc/systemd/system/kubelet.service.d si no existe
+  file:
+    path: /etc/systemd/system/kubelet.service.d
+    state: directory
+  become: yes
+
+- name: Configure the kubelet to be a service manager for etcd
+  template:
+    src: templates/20-etcd-service-manager.conf.j2
+    dest: /etc/systemd/system/kubelet.service.d/20-etcd-service-manager.conf
+  notify:
+    - Restart kubelet
+  become: yes
+
+

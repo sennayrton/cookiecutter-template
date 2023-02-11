@@ -1,0 +1,52 @@
+---
+- name: Copiamos el binario de kubectl en /tmp/
+  copy:
+    src: "files/kubectl"
+    dest: "/tmp/kubectl"
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copiamos el binario de kubectl a /usr/local/bin/
+  become: yes
+  become_user: root
+  shell: "install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl"
+
+## Addonds de kubectl ( kubectx, kubens, k9s ...)
+
+- name: Copiamos el directorio de kubectx a /usr/local/{{ entorno }}/{{ user_home_dir }}/
+  copy:
+    src: "files/kubectx"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/kubectx"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0755'
+
+- name: Enlace simbólico de kubectx a /usr/local/bin/kubectx
+  become: yes
+  become_user: root
+  shell: ln -s /usr/local/{{ entorno }}/{{ user_home_dir }}/kubectx/kubectx /usr/local/bin/kubectx
+
+- name: Enlace simbólico de kubens a /usr/local/bin/kubens
+  become: yes
+  become_user: root
+  shell: ln -s /usr/local/{{ entorno }}/{{ user_home_dir }}/kubectx/kubens /usr/local/bin/kubens
+
+#- name: Creamos directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/certs/{{ entorno }} si no existe
+#  file:
+#    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/certs/{{ entorno }}"
+#    owner: "{{ user_name }}"
+#    group: "{{ user_group }}"
+#    mode: u=rw,g=r,o=r
+#    state: directory
+#    recurse: yes
+
+#- name: Copiamos el kubeconfig del cluster correspondiente a la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/certs/{{ entorno }}
+#  copy:
+#    src: files/{{ entorno }}/admin.conf
+#    dest: /usr/local/{{ entorno }}/{{ user_home_dir }}/certs/{{ entorno }}/admin.conf
+#    owner: "{{ user_name }}"
+#    group: "{{ user_group }}"
+#    mode: u=rw,g=r,o=r
+
+

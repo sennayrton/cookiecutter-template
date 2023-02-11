@@ -1,0 +1,3 @@
+server = "https://{{ hostname_registry }}:{{ registry_port }}"
+[host."https://{{ hostname_registry }}:{{ registry_port }}"]
+  ca = "/etc/containerd/certs.d/{{ hostname_registry }}:{{ registry_port }}/ca.crt"

@@ -1,0 +1,83 @@
+---
+
+- name: Habilitar el puerto 6443 TCP
+  firewalld:
+    port: 6443/tcp
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Habilitar el puerto 443 TCP
+  firewalld:
+    port: 443/tcp
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Habilitar el puerto 80 TCP
+  firewalld:
+    port: 80/tcp
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: setsebool -P haproxy_connect_any=1
+  become: yes
+  become_user: root
+  command: setsebool -P haproxy_connect_any=1
+
+- name: Allow bind non local IP (VIP)
+  become: yes
+  become_user: root
+  sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    value: 1
+    state: present
+
+- name: Creamos directorio /tmp/haproxy si no existe
+  file:
+    path: "/tmp/haproxy/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Movemos los paquetes de haproxy a /tmp/haproxy/ para instalar
+  copy:
+    src: "files/haproxy/{{ item }}"
+    dest: "/tmp/haproxy/{{ item }}"
+    owner: root
+    group: root
+    mode: '0744'
+  with_items: "{{ haproxy }}"
+
+- name: Instalamos haproxy con los paquetes en /tmp/haproxy
+  yum:
+    name: "/tmp/haproxy/{{ item }}"
+    state: present
+    disablerepo: "*"
+  with_items: "{{ haproxy }}"
+
+- name: Habilitamos el servicio de HAproxy
+  become: yes
+  systemd:
+    name: haproxy
+    enabled: yes
+    masked: no
+
+- name: Copiamos la configuración de HAproxy
+  template:
+    src: templates/haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    validate: haproxy -c -V -f %s
+  notify:
+    - restart haproxy
+  become: yes
+
+- name: Removemos los paquetes de haproxy ya instalados de /tmp/haproxy/
+  file:
+    path: "/tmp/haproxy/"
+    state: absent

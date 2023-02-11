@@ -1,0 +1,184 @@
+---
+
+#- name: Creamos directorio /usr/local/pr/{{ entorno }}/{{ user_home_dir }}/nerdctl si no existe
+#  file:
+#    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/nerdctl"
+#    owner: "{{ user_name }}"
+#    group: "{{ user_group }}"
+#    mode: u=rw,g=r,o=r
+#    state: directory
+#    recurse: yes
+
+- name: Creamos directorio /etc/containerd si no existe
+  file:
+    path: "/etc/containerd"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Creamos directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/containerd/ si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/containerd/"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rw,g=r,o=r
+    state: directory
+    recurse: yes
+
+- name: Creamos directorio /usr/local{{ entorno }}/{{ user_home_dir }}/var/lib/nerdctl si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/var/lib/nerdctl"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rw,g=r,o=r
+    state: directory
+    recurse: yes
+
+- name: Creamos directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/run/containerd si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/run/containerd"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rw,g=r,o=r
+    state: directory
+    recurse: yes
+
+- name: Creamos directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/var/lib/containerd si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/var/lib/containerd"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rw,g=r,o=r
+    state: directory
+    recurse: yes
+
+- name: Creamos directorio /etc/nerdctl si no existe
+  file:
+    path: "/etc/nerdctl"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Creamos directorio /etc/containerd/certs.d/{{ hostname_registry }}:{{ registry_port }} si no existe
+  file:
+    path: "/etc/containerd/certs.d/{{ hostname_registry }}:{{ registry_port }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rw,g=r,o=r
+    state: directory
+
+- name: Copiamos el certificado del Registry a la ruta /etc/containerd/certs.d/{{ hostname_registry }}:{{ registry_port }}/
+  copy:
+    src: "files/ca.crt" # todo obtener certificado con del fetch
+    dest: "/etc/containerd/certs.d/{{ hostname_registry }}:{{ registry_port }}/ca.crt"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0640'
+
+- name: Copiamos el certificado del Registry a la ruta /etc/pki/ca-trust/source/anchors/
+  copy:
+    src: "files/ca.crt" # todo obtener certificado con del fetch
+    dest: "/etc/pki/ca-trust/source/anchors/{{ hostname_registry }}.crt"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0640'
+
+- name: Actualizamos los certificados del SO
+  become: yes
+  become_user: root
+  command: update-ca-trust
+
+- name: Prerequisito containerd 1
+  become: yes
+  become_user: root
+  shell: |
+    cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
+    overlay
+    br_netfilter
+    EOF
+
+- name: Prerequisito containerd 2
+  become: yes
+  become_user: root  
+  shell: |
+    modprobe overlay
+
+- name: Prerequisito containerd 3
+  become: yes
+  become_user: root  
+  shell: |
+    modprobe br_netfilter
+
+- name: Setup required sysctl params, these persist across reboot
+  become: yes
+  become_user: root  
+  shell: |
+    cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+    net.bridge.bridge-nf-call-iptables  = 1
+    net.ipv4.ip_forward                 = 1
+    net.bridge.bridge-nf-call-ip6tables = 1
+    EOF
+
+- name: Apply sysctl params without reboot
+  become: yes
+  become_user: root
+  shell: |
+    sysctl --system
+
+- name: Descomprimimos el paquete de nerdctl en /usr/local
+  unarchive: 
+    src: "files/nerdctl-full-{{ nerdctl_version }}-linux-amd64.tar.gz"
+    dest: /usr/local
+
+- name: copiar config.toml (editado con ruta root y state /usr/local/{{ entorno }}/{{ user_home_dir }})
+  template:
+    src: "templates/config.toml.j2"
+    dest: "/etc/containerd/config.toml"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0744'
+
+- name: copiar nerdctl.toml (editado con ruta data-root en )
+  template:
+    src: "templates/nerdctl.toml.j2"
+    dest: "/etc/nerdctl/nerdctl.toml"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0744'
+
+- name: copiar el fichero crictl.yaml en /etc/crictl.yaml
+  copy:
+    src: "files/crictl.yaml"
+    dest: "/etc/crictl.yaml"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: copiar containerd.service con ruta del config.toml especificada
+  copy:
+    src: "files/containerd.service"
+    dest: "/usr/local/lib/systemd/system/containerd.service"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0744'
+
+- name: Copiar configuración de hosts.toml a las máquinas
+  template:
+    src: "templates/hosts.toml.j2"
+    dest: "/etc/containerd/certs.d/{{ hostname_registry }}:{{ registry_port }}/hosts.toml"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0744'
+
+- name: Activar servicio, daemon-reload y restart
+  shell: |
+    systemctl enable --now containerd
+    systemctl daemon-reload
+    systemctl start containerd
+
+- name: Hacemos login con el Registry
+  shell: nerdctl login {{ registry_domain }}:{{ registry_port }} -u "{{ registry_user }}" -p "{{ registry_pass }}"
+  become: yes
+
