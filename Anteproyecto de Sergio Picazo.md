@@ -29,27 +29,26 @@ Visto bueno del cotutor (en su caso)
     - 2.2 Kubernetes
     - 2.3 Ansible
 - **3 Desarrollo**
-    - 3.1 Punto de partida
-    - 3.3 Planificación de uso de recursos
-    - 3.4 Arquitectura nodos master
-    - 3.5 Arquitectura nodos worker
-    - 3.6 Método de instalación
-    - 3.6.1 Creación de máquinas independientes (setup-host.sh)
-    - 3.6.2 Instalación de common necesarios
-    - 3.7 Configuración de la plataforma o clúster
-    - 3.7.1 Configuración del bastión
-    - 3.7.2 Configuración del registry (salida a internet mediante proxy)
-    - 3.7.3 Configuración del nodo master
-    - 3.7.4 Configuración de nodos worker
-    - 3.7.5 Configuración de loadbalancer
-    - 3.7.6 Configuración de backup (etcd)
-    - 3.8 Automatización de la instalación
+    - 3.1 Prerrequisitos y preparación del entorno
+    - 3.2 Planificación de uso de recursos (Requisitos de hardware y software)
+    - 3.2.1 Creación de máquinas independientes (setup-host.sh)
+    - 3.3 Instalación y configuración de Ansible
+    - 3.3.1 Creación de playbooks de Ansible
+    - 3.3.2 Definición de las tareas y roles necesarios
+    - 3.3.3 Configuración de los hosts y los grupos
+    - 3.3.4 Creación de variables y templates
+    - 3.3.5 Instalación de common necesarios
+    - 3.3.6 Despliegue del clúster de Kubernetes
+    - 3.3.7 Instalación de los componentes del clúster(master,workers, bastión, registry, loadbalancer, etcd)
+    - 3.3.8 Configuración de los nodos y los componentes
+    - 3.3.9 Verificación del funcionamiento del clúster (gestionarlo con Rancher Desktop por ejemplo)
 - **4 Resultados**
-    - Demostración
+    - 4.1 Demostración
 - **5 Conclusiones**
-- **6 Vista a futuro u otras formas de instalar en k8s (Helm)**
+    - 5.1 Ventajas de utilizar Ansible para montar un cluster de Kubernetes
+- **6 Futuras tendencias y vista a futuro
+    - 6.1 Otras formas de instalar en k8s con Helm
 - **7 Bibliografía**
-
 
 
 - ¿Cómo harías una presentación para mostrar evidencias del trabajo hecho?
@@ -115,7 +114,7 @@ Por último, se redactará la memoria plasmando los resultados obtenidos en ella
 ## Metodología y plan de trabajo
 Descripción (puede ser incluso una enumeración) clara de las etapas que se van a seguir, y si es posible se deberá incluir un diagrama de Gantt.
 
-Para procedes a la realización del trabajo de fin de grado se ha optado por dividirlo en diferentes fases para poder llevar un control y seguimiento de las tareas de manera específica. El total de horas de trabajo será 350 aproximadamente.
+Para proceder a la realización del trabajo de fin de grado se ha optado por dividirlo en diferentes fases para poder llevar un control y seguimiento de las tareas de manera específica. El total de horas de trabajo será 350 aproximadamente.
 
 El trabajo se ha dividido en semanas y no en días para una mayor libertad en la consecución de los objetivos. Cada semana comprenderá 17.5 horas de trabajo.
 
@@ -133,6 +132,8 @@ De cara a la consecución de los objetivos del proyecto que se han descrito ante
     * **Correcciones estéticas (0,5 semanas):** Retoques y modificaciones a nivel decorativo y artístico.
     * **Documentación del código (0,5 semanas):** Comentar y documentar de forma adecuada el código de los diferentes programas.
 4. **Documentación y finalización del proyecto (1 semanas):** En esta última fase, se realizará la documentación correspondiente poniendo especial atención en los últimos detalles.
+
+![](https://hackmd.io/_uploads/B1BLjpIps.png)
 
 ## Medios
 (Descripción de los medios necesarios para realizar el TFG.)
