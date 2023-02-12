@@ -22,7 +22,7 @@ Para ejecutar estos roles sobre una máquina con Ansible instalado debemos tener
 ansible-playbook -i inventario --ask-vault-pass --limit <máquina> sites.yaml
 ```
 
-Adicionalmente, se deben descargar los paquetes necesarios para cada role desde el Drive ( https://drive.google.com/drive/folders/18rcX8oO3f4Uc-f3fSvWzorPHxG9KWr-2 ) y meterlos en el directorio local donde se ejecutará Ansible ( dentro del role en el directorio files).
+Adicionalmente, se deben descargar los paquetes necesarios para cada role desde el Drive y meterlos en el directorio local donde se ejecutará Ansible ( dentro del role en el directorio files).
 
 Esto ejecutará el role de common en la máquina específicada en el parámetro limit y después el role determinada por el inventario de Ansible ( **ansible-playbooks/inventario** ) .
 Adicionalmente se puede ejecutar una determinada tarea especificada según la tag que se defina en las tasks de ese role:
