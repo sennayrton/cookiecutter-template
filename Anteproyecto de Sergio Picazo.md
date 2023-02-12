@@ -40,13 +40,13 @@ Visto bueno del cotutor (en su caso)
     - 3.3.5 Instalación de common necesarios
     - 3.3.6 Despliegue del clúster de Kubernetes
     - 3.3.7 Instalación de los componentes del clúster(master,workers, bastión, registry, loadbalancer, etcd)
-    - 3.3.8 Configuración de los nodos y los componentes
-    - 3.3.9 Verificación del funcionamiento del clúster (gestionarlo con Rancher Desktop por ejemplo)
+    - 3.3.8 Configuración de los nodos y los componentes   
 - **4 Resultados**
-    - 4.1 Demostración
+    - 4.1 Verificación del funcionamiento del clúster (gestionarlo con Rancher Desktop por ejemplo)
+    - 4.2 Demostración
 - **5 Conclusiones**
     - 5.1 Ventajas de utilizar Ansible para montar un cluster de Kubernetes
-- **6 Futuras tendencias y vista a futuro
+- **6 Futuras tendencias y vista a futuro**
     - 6.1 Otras formas de instalar en k8s con Helm
 - **7 Bibliografía**
 
