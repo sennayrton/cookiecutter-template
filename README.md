@@ -1,14 +1,22 @@
-# Transformación K8S
+# Despliegue de Kubernetes con Ansible en entornos offline
 
 ### **Descripción**
+
+Este proyecto tiene como objetivo el diseño y construcción de una instalación automatizada de un clúster de Kubernetes, con aprovisionamiento automático, en un entorno de alta seguridad, en el que la conectividad a Internet es limitada o nula.
+
+El objetivo al finalizar el proyecto es ser capaz de ofrecer un entorno totalmente funcional de laboratorio en el que se puedan hacer pruebas que conlleven riesgos y donde se puedan probar todo tipo de instalaciones de aplicativos para seguir aprendiendo sobre dicha plataforma, por tanto, un entorno de laboratorio es su principal campo de aplicación.
 
 En el laboratorio de CIN creamos máquinas correspondientes a nodo master, nodo worker, nodo etcd, registry, balanceador y bastión, todas basadas en RHEL 7.9. En ellos se hará una instalación de kubernetes con todos sus componentes, extensiones y otras utilidades que consideremos interesantes (herramientas, lenguajes de programación, etc), con el objetivo de identificar todos los pasos y paquetes necesarios para realizar una instalación completamente offline en la nueva infraestructura. Importante tener en cuenta que solo dispondremos de un usuario sin permisos de root, que solo tendrá propiedad de la ruta /usr/local/<entorno>/<usuario> , donde tendremos que instalar y almacenar todo.
 
 ### **Paso 1: Configuración inicial**
 
-Se ha creado la sección "*1.* *Configuración inicial"* en el documento [Transformación Clúster Kubernetes]
-
 **Descripción:** se configura la IP, hostname, usuario, grupo y directorio de trabajo para todas las máquinas.
+
+● Configuración del archivo .bashrc de nuestro usuario, estableciendo el prompt y otros detalles mínimos.
+● Creación del archivo .profile en el home de nuestro usuario, indicando que se cargue la configuración del .bashrc con cada login.
+● Cambio del layout del teclado a español (originalmente está en teclado inglés americano).
+● Añadir el grupo al archivo /etc/sudoers para que los usuarios que pertenezcan a él puedan ejecutar comandos como root con sudo. Si vamos a tener binarios que necesiten ejecutarse con sudo y que se encuentren en rutas que no estén en el PATH de sudo (comprobar con printenv), es necesario comentar la línea de secure_path en el /etc/sudoers.
+● Configuración de IP y hostname de las máquinas (explicado en Laboratorio GMV - Documentos de Google) + reinicio del servicio network. Importante mantener el UUID de la interfaz de red.
 
 **Paquetes:** ninguno**.
 
@@ -20,9 +28,26 @@ Se ha creado la sección "*1.* *Configuración inicial"* en el documento [Tra
 
 ## **Paso 2: Instalación de containerd y nerdctl**
 
-Se ha creado la sección *"2. Instalación de containerd y* nerdctl" en el documento [Transformación Clúster Kubernetes]
-
 **Descripción:** se instala containerd y nerdctl con todo lo que necesitan, y se realiza una prueba de levantar contenedor de nginx.
+1 - Extraer contenido del .tar.gz de nerdct-fulll (binarios, librerías, etc) en /usr/local/pr/kamino.
+tar Cxzvvf /usr/local/pr/kamino nerdctl-full-0.18.0-linux-amd64.tar.gz
+2 - Generamos el config.toml con los siguientes comandos:
+sudo mkdir -p /etc/containerd/config.toml
+containerd config default > /etc/containerd/config.toml
+3 - Arrancamos el servicio de containerd :
+sudo systemctl enable --now containerd
+Esto genera el fichero /usr/usr/local/lib/systemd/system/containerd.service
+4 - Seguidamente especificamos este archivo de configuración de containerd en el daemon de containerd:
+sudo vi /usr/local/lib/systemd/system/containerd.service
+ExecStart=/usr/local/bin/containerd -c /etc/containerd/config.toml
+5 - Configurar servicio containerd para que el directorio de almacenamiento persistente (pods, addons y plugins, etc). Se modifica con el parámetro root y state al iniciar el servicio con systemd (alternativamente se puede crear un archivo de configuración, ver https://github.com/containerd/containerd/blob/main/docs/ops.md#:~:text=%2D%2Droot%20 value%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20containerd %20root%20directory , archivo /etc/containerd/config.toml https://containerd.io/docs/getting-started/ ).
+root = "/usr/local/pr/kamino/var/lib/containerd" state = "/usr/local/pr/kamino/run/containerd"
+6 - Recargamos systemd:
+systemctl daemon-reload
+7 - Reiniciamos el servicio de containerd:
+systemctl restart containerd
+8- Test: levantar contenedor de alpine
+nerdctl run --rm -it alpine:latest
 
 **Paquetes:** nerdctl-full-0.14.0-linux-amd64.tar.gz , nginx-alpine.tar
 
@@ -61,7 +86,7 @@ Esto ejecutará el role de common en la máquina específicada en el parámetro 
 
 `ansible-playbook -i inventario --limit <máquina> --tags <tag> sites.yaml`
 
-## **Paso 3: Instalación y configuración de Docker y Harbor**
+## **Paso 3: Instalación y configuración de Docker y Harbor, Creación y configuración del Registry**
 
 Se ha creado un role de Ansible que instala Docker y sus dependencias , seguidamente lo configura para que la ruta donde crea los contenedores sea /usr/local/pr/kamino/var/lib/docker/overlay2.  Para las pruebas se ha utilizado la máquina del loadbalancer ( 192.168.112.139 ) aunque finalmente se llamará registry.cin o similar.
 
@@ -122,9 +147,22 @@ Para bajarnos imágenes de Internet mediante el proxy:
 
 **docker pull loadbalancer.cin:443/proxy_docker_hub/bitnami/openldap:2.5.11**
 
-O bien de Kubernetes ( repositorio k8s.gcr.io) :
+O bien de Kubernetes (repositorio k8s.gcr.io) :
 
 **docker pull loadbalancer.cin:443/k8s.gcr.io/pause:3.5**
+**docker pull loadbalancer.cin:443/k8s.gcr.io/coredns/coredns:v1.8.4**
+
+Se puede observar que el Registry ha accedido mediante el proxy al repositorio de Internet k8s.gcr.io y ha bajado las imágenes requeridas.
+
+
+### **Creación y configuración del Bastion
+Paquetes a instalar: kube-ps1 Scripts relacionados:
+Prompt para kubernetes
+Descomprimir kube-ps1.tar.gz en /opt/kube-ps1
+Añadir a /usr/local/pr/kuka/home/.bashrc lo siguiente:
+#Kube-ps1
+source /opt/kube-ps1/kube-ps1.sh
+PS1='[\u@\h \W $(kube_ps1)]\$ '
 
 
 
