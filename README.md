@@ -80,7 +80,8 @@ Para ejecutar estos roles sobre una máquina con Ansible instalado debemos tener
 
 `ansible-playbook -i inventario --limit <máquina> sites.yaml`
 
-Adicionalmente, se deben descargar los paquetes necesarios para cada role desde el Drive y meterlos en el directorio local donde se ejecutará Ansible ( dentro del role en el directorio files).
+Adicionalmente, se pensó en descargar los paquetes necesarios para cada role desde el Drive y meterlos en el directorio local donde se ejecutaría Ansible ( dentro del role en el directorio files).
+Pero finalmente podremos apuntar al repo oficial de RHEL 8.6, por tanto, se descargarán los paquetes a instalar (latest) de dicho repo para su posterior instalación.
 
 Esto ejecutará el role de common en la máquina específicada en el parámetro limit y después el role determinada por el inventario de Ansible ( **scripts/ansible-playbooks/inventario** ) . Adicionalmente se puede ejecutar una determinada tarea especificada según la tag que se defina en las tasks de ese role:
 
