@@ -2,7 +2,7 @@
 
 # Máquina física: 192.168.111.38
 
-## Máquinas virtuales para el clúster:
+# Máquinas virtuales para el clúster:
 
 ## *IP - Hostname - Rol*
 
