@@ -97,11 +97,13 @@ cat <<EOF > /etc/hosts
 #balanceador2
 # registry
 192.168.112.139 loadbalancer loadbalancer.cin
-192.168.112.137 master1
-192.168.112.138 worker1
-192.168.112.150 etcd1
-192.168.112.151 etcd2
-192.168.112.152 etcd3
+192.168.112.183 master1.cin
+192.168.112.184 worker1.cin
+192.168.112.185 worker2.cin
+192.168.112.186 registry.cin
+192.168.112.187 loadbalancer1.cin
+192.168.112.188 loadbalancer2.cin
+192.168.112.189 vipa.cin
 EOF
 
 #systemctl restart network.service
