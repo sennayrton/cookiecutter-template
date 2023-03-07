@@ -6,7 +6,7 @@
     state: restarted
   become: yes
 
-# handler for keeplived
+# handler for keepalived
 - name: restart keepalived
   systemd:
     name: keepalived

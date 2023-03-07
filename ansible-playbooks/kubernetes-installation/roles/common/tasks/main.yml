@@ -11,7 +11,3 @@
 - name: Instalar Python 3.7.11
   import_tasks: install-python.yaml
   tags: python-packet
-
-- name: Instalar cqlsh 6.0.0
-  import_tasks: cqlsh-packet.yaml
-  tags: cqlsh-packet
