@@ -13,9 +13,13 @@ En el laboratorio de CIN creamos máquinas correspondientes a nodo master, nodo 
 **Descripción:** se configura la IP, hostname, usuario, grupo y directorio de trabajo para todas las máquinas.
 
 ● Configuración del archivo .bashrc de nuestro usuario, estableciendo el prompt y otros detalles mínimos.
+
 ● Creación del archivo .profile en el home de nuestro usuario, indicando que se cargue la configuración del .bashrc con cada login.
+
 ● Cambio del layout del teclado a español (originalmente está en teclado inglés americano).
+
 ● Añadir el grupo al archivo /etc/sudoers para que los usuarios que pertenezcan a él puedan ejecutar comandos como root con sudo. Si vamos a tener binarios que necesiten ejecutarse con sudo y que se encuentren en rutas que no estén en el PATH de sudo (comprobar con printenv), es necesario comentar la línea de secure_path en el /etc/sudoers.
+
 ● Configuración de IP y hostname de las máquinas (explicado en Laboratorio GMV - Documentos de Google) + reinicio del servicio network. Importante mantener el UUID de la interfaz de red.
 
 **Paquetes:** ninguno**.
