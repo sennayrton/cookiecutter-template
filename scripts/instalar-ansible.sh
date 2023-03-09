@@ -3,7 +3,6 @@
 
 ## Necesario pasar el fichero comprimido con todas las dependencias de Python y Ansible previamente a la ruta /tmp
 ## Fichero => ansible-bash.tar.gz
-## Enlace al Drive con el fichero => https://drive.google.com/file/d/19iMXqtowGrynVDiE67OF9PCTGxPyjLEM/view?usp=sharing
 
 #############
 # VARIABLES #

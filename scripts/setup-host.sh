@@ -107,4 +107,5 @@ cat <<EOF > /etc/hosts
 EOF
 
 #systemctl restart network.service
+
 reboot

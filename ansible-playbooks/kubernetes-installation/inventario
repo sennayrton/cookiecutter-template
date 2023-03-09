@@ -1,29 +1,23 @@
 [registry]
-harbor ansible_host=192.168.112.139 ansible_connection=ssh
+harbor ansible_host=192.168.112.186 ansible_connection=ssh
 
 [k8s:children]
 masters
 workers
-etcd
 
 [masters]
-master ansible_host=192.168.112.137 ansible_connection=ssh
+master ansible_host=192.168.112.183 ansible_connection=ssh
 
 [workers]
-worker1 ansible_host=192.168.112.138 ansible_connection=ssh
-worker2 ansible_host=192.168.112.143 ansible_connection=ssh
-
-[etcd]
-etcd1 ansible_host=192.168.112.150 ansible_connection=ssh
-etcd2 ansible_host=192.168.112.151 ansible_connection=ssh
-etcd3 ansible_host=192.168.112.152 ansible_connection=ssh
+worker1 ansible_host=192.168.112.184 ansible_connection=ssh
+worker2 ansible_host=192.168.112.185 ansible_connection=ssh
 
 [bastion]
 bastion ansible_host=192.168.112.139 ansible_connection=ssh
 
 [balanceadores]
-balanceador1 ansible_host=192.168.112.140 ansible_connection=ssh
-balanceador2 ansible_host=192.168.112.141 ansible_connection=ssh
+balanceador1 ansible_host=192.168.112.187 ansible_connection=ssh
+balanceador2 ansible_host=192.168.112.188 ansible_connection=ssh
 
 [bal_vip]
-vip ansible_host=192.168.112.142 ansible_connection=ssh
+vip ansible_host=192.168.112.189 ansible_connection=ssh
