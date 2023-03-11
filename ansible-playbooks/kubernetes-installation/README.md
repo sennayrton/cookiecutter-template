@@ -18,5 +18,7 @@
 
 ### 192.168.112.188	- loadbalancer2.cin - Kubernetes Load Balancer2
 
+### 192.168.112.190	- bastion.cin - Kubernetes Bastion
+
 ### 192.168.112.189	- vipa.cin - Kubernetes Ingress VIP (solo IP virtual , no es una máquina)
 

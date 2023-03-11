@@ -13,7 +13,7 @@ worker1 ansible_host=192.168.112.184 ansible_connection=ssh
 worker2 ansible_host=192.168.112.185 ansible_connection=ssh
 
 [bastion]
-bastion ansible_host=192.168.112.139 ansible_connection=ssh
+bastion ansible_host=192.168.112.190 ansible_connection=ssh
 
 [balanceadores]
 balanceador1 ansible_host=192.168.112.187 ansible_connection=ssh

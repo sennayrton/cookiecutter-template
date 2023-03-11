@@ -17,17 +17,11 @@
   roles:
     - k8s
 
-- hosts: etcd
+- hosts: masters
   become: true
   become_method: sudo
   roles:
     - etcd
-
-#- hosts: masters
-#  become: true
-#  become_method: sudo
-#  roles:
-#    - etcd
 
 - hosts: workers
   become: true
@@ -41,13 +35,13 @@
   roles:
     - bastion
     
-- hosts: balanceador
+- hosts: balanceadores
   become: true
   become_method: sudo
   roles:
     - balanceador
 
-- hosts: master
+- hosts: masters
   become: true
   become_method: sudo
   roles:
