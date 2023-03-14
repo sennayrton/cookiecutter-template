@@ -14,27 +14,28 @@ user_group: kuka
 user_home_dir: kuka
 
 # hostnames
-hostname_master1: master1
+hostname_master: master
 hostname_worker1: worker1
 hostname_worker2: worker2
-hostname_registry: registry.cin
-hostname_loadbalancer1: loadbalancer1.cin
-hostname_loadbalancer2: loadbalancer2.cin
+hostname_registry: registry
+hostname_loadbalancer1: loadbalancer1
+hostname_loadbalancer2: loadbalancer2
 
 # IP's
-ip_master1: 192.168.112.183
+ip_master: 192.168.112.183
 ip_worker1: 192.168.112.184
 ip_worker2: 192.168.112.185
 ip_registry: 192.168.112.186
 ip_loadbalancer1: 192.168.112.187
 ip_loadbalancer2: 192.168.112.188
 ip_vip: 192.168.112.189
+ip_bastion: 192.168.112.190
 
 # Proxy Docker Hub
 proxy_docker_hub: proxy_docker_hub
 
 # Registry domain
-registry_domain: loadbalancer.cin
+registry_domain: loadbalancer
 
 # Registry Port
 registry_port: 443
