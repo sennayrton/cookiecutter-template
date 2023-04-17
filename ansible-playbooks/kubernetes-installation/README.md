@@ -18,6 +18,4 @@
 
 ### 192.168.112.188	- loadbalancer2 - Kubernetes Load Balancer2
 
-### 192.168.112.189	- vipa - Kubernetes Ingress VIP (solo IP virtual , no es una máquina)
-
 ### 192.168.112.190	- bastion - Kubernetes Bastion
