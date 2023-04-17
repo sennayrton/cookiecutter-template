@@ -16,27 +16,7 @@ El objetivo al finalizar el proyecto es ser capaz de ofrecer un entorno totalmen
 
 En el laboratorio de CIN creamos máquinas correspondientes a nodo master/etcd, nodos worker, registry, balanceadores y bastión, todas basadas en RHEL 8.6. En ellos se hará una instalación de kubernetes con todos sus componentes, extensiones y otras utilidades que consideremos interesantes (herramientas, lenguajes de programación, etc), con el objetivo de identificar todos los pasos y paquetes necesarios para realizar una instalación completamente offline en la nueva infraestructura. Importante tener en cuenta que solo dispondremos de un usuario sin permisos de root, que solo tendrá propiedad de la ruta /usr/local/<entorno>/<usuario> , donde tendremos que instalar y almacenar todo.
 
-### **Paso 1: Configuración inicial**
 
-**Descripción:** se configura la IP, hostname, usuario, grupo y directorio de trabajo para todas las máquinas.
-
-● Configuración del archivo .bashrc de nuestro usuario, estableciendo el prompt y otros detalles mínimos.
-
-● Creación del archivo .profile en el home de nuestro usuario, indicando que se cargue la configuración del .bashrc con cada login.
-
-● Cambio del layout del teclado a español (originalmente está en teclado inglés americano).
-
-● Añadir el grupo al archivo /etc/sudoers para que los usuarios que pertenezcan a él puedan ejecutar comandos como root con sudo. Si vamos a tener binarios que necesiten ejecutarse con sudo y que se encuentren en rutas que no estén en el PATH de sudo (comprobar con printenv), es necesario comentar la línea de secure_path en el /etc/sudoers.
-
-● Configuración de IP y hostname de las máquinas (explicado en Laboratorio GMV - Documentos de Google) + reinicio del servicio network. Importante mantener el UUID de la interfaz de red.
-
-**Paquetes:** ninguno**.
-
-**Scripts:** [setup-host.sh]
-
-**Probado en:** master.
-
-**Falta por probar en:** worker, etcd, registry, balanceador, bastión.
 
 ## **Paso 2: Instalación de containerd y nerdctl**
 
