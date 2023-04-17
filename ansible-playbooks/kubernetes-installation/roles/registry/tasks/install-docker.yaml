@@ -1,90 +1,58 @@
 ---
 
-- name: Creamos directorio /tmp/docker si no existe
+- name: Instalamos yum-utils
+  dnf:
+    name: yum-utils
+    state: latest
+
+- name: Creamos directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/docker si no existe
   file:
-    path: "/tmp/docker/"
-    owner: root 
-    group: root 
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/docker"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
     mode: u=rwx,g=rx,o=r
     state: directory
 
-- name: Movemos el fichero con las dependencias a /tmp/docker para instalar
-  copy:
-    src: "files/docker-ce-offline.tar.gz"
-    dest: "/tmp/docker/docker-ce-offline.tar.gz"
-    owner: root
-    group: root
-    mode: '0744'
-    
-- name: Descomprimimos las dependencias del fichero docker-ce-offline.tar.gz
-  unarchive:
-    src: "/tmp/docker/docker-ce-offline.tar.gz"
-    dest: "/tmp/docker/"
-    remote_src: yes
+- name: Instalamos Docker y sus dependencias definidas en la variable docker
+  dnf:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ docker }}"
 
-- name: Instalamos las dependencias de Docker y Docker versión 20.10.12
-  become: yes
-  become_user: root
-  shell: yum localinstall -y --disablerepo=* /tmp/docker/docker-ce-offline/*.rpm
 
-- name: Movemos el binario de docker-compose a /usr/local/bin/docker-compose
-  copy:
-    src: "/tmp/docker/docker-ce-offline/docker-compose-Linux-x86_64"
-    dest: "/usr/local/bin/docker-compose"
-    owner: root
-    group: root
-    mode: '0740'
-    remote_src: yes
-
-- name: Creamos directorio /usr/local/pr/kamino/var/lib/docker si no existe
-  file:
-    path: "/usr/local/pr/kamino/var/lib/docker"
-    owner: kuka 
-    group: kuka
-    mode: u=rwx,g=rwx,o=r
-    state: directory
-    recurse: yes
-
-- name: Creamos y habilitamos el Servicio de Docker
+- name: Creamos el Servicio de Docker
   systemd:
     name: docker
     state: started
-    enabled: yes
+  become: true
 
 - name: Paramos el Servicio de Docker
   systemd:
     name: docker
     state: stopped
-
+  become: true  
+  
 - name: Paramos el Socket de Docker
   systemd:
     name: docker.socket
     state: stopped
-
-- name: Copiamos el servicio de Docker custom a /lib/systemd/system/docker.service
-  copy:
-    src: "/tmp/docker/docker-ce-offline/docker.service"
-    dest: "/lib/systemd/system/docker.service"
+  become: true
+  
+- name: Copiamos el servicio de Docker custom a /usr/lib/systemd/system/docker.service
+  template:
+    src: "templates/docker.service.j2"
+    dest: "/usr/lib/systemd/system/docker.service"
     owner: root
     group: root
     mode: '0644'
-    remote_src: yes
 
 - name: Recargamos la configuración de systemd
   systemd:
     daemon_reload: yes
-
+  become: true
+  
 - name: Reiniciamos el servicio de Docker con los cambios realizados
   systemd:
     state: started
     name: docker
-
-- name: Removemos los paquetes de docker ya instalados de /tmp/docker/docker-ce-offline.tar.gz
-  file:
-    path: "/tmp/docker/docker-ce-offline.tar.gz"
-    state: absent
-
-- name: Removemos los paquetes de docker ya instalados de /tmp/docker
-  file:
-    path: "/tmp/docker/"
-    state: absent
+  become: true
