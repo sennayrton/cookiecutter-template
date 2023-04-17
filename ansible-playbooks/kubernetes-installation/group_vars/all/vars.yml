@@ -9,9 +9,9 @@ registry_pass: "{{ vault_registry_pass }}"
 entorno: pr
 
 # comun para todas las maquinas , realmente luego será kamino el user_home_dir , xpkami01 el user_name y gpkami01 el user_group
-user_name: kuka
-user_group: kuka
-user_home_dir: kuka
+user_name: xpkami01
+user_group: gpkami01
+user_home_dir: kamino
 
 # hostnames
 hostname_master: master
