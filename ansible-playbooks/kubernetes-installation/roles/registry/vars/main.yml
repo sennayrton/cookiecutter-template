@@ -1,3 +1,11 @@
 ---
 
-harbor_version: 2.5.0
+docker:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io 
+  - docker-buildx-plugin
+  - docker-compose-plugin
+  
+harbor_version: "v2.7.1"
+
