@@ -58,7 +58,7 @@ version = 2
     max_container_log_line_size = 16384
     netns_mounts_under_state_dir = false
     restrict_oom_score_adj = false
-    sandbox_image = "{{ registry_domain }}:{{ registry_port }}/transformacion/pause:{{ image_pause_version }}"
+    sandbox_image = "{{ hostname_registry }}:{{ registry_port }}/registry.k8s.io/pause:3.6"
     selinux_category_range = 1024
     stats_collect_period = 10
     stream_idle_timeout = "4h0m0s"
@@ -142,7 +142,7 @@ version = 2
       key_model = "node"
 
     [plugins."io.containerd.grpc.v1.cri".registry]
-      config_path = "/etc/containerd/certs.d"
+      config_path = "/usr/local/{{ entorno }}/{{ user_home_dir }}/containerd/certs.d"
 
       [plugins."io.containerd.grpc.v1.cri".registry.auths]
 
