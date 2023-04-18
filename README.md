@@ -40,7 +40,7 @@ Esto ejecutará el role de common en la máquina especificada en el parámetro l
 
 `ansible-playbook -i inventario --limit <máquina> --tags <tag> sites.yaml`
 
-Desde aquí revisar:
+### Desde aquí revisar:
   
   
 ## **Paso 3: Instalación y configuración de Docker y Harbor, Creación y configuración del Registry**
