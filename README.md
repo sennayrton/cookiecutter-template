@@ -8,7 +8,7 @@ TFG:
 
 https://docs.google.com/document/d/1zDeCvBRdHxGBPP7pIMV_s16iTAd8iWBk/edit?usp=sharing&ouid=116331202800646242877&rtpof=true&sd=true
 
-### **Descripción**
+### Descripción
 
 Este proyecto tiene como objetivo el diseño y construcción de una instalación automatizada de un clúster de Kubernetes, con aprovisionamiento automático, en un entorno de alta seguridad, en el que la conectividad a Internet es limitada o nula.
 
@@ -18,46 +18,7 @@ En el laboratorio de CIN creamos máquinas correspondientes a nodo master/etcd, 
 
 
 
-## **Paso 2: Instalación de containerd y nerdctl**
-
-**Descripción:** se instala containerd y nerdctl con todo lo que necesitan, y se realiza una prueba de levantar contenedor de nginx.
-1 - Extraer contenido del .tar.gz de nerdct-fulll (binarios, librerías, etc) en /usr/local/pr/kamino.
-tar Cxzvvf /usr/local/pr/kamino nerdctl-full-0.18.0-linux-amd64.tar.gz
-2 - Generamos el config.toml con los siguientes comandos:
-sudo mkdir -p /etc/containerd/config.toml
-containerd config default > /etc/containerd/config.toml
-3 - Arrancamos el servicio de containerd :
-sudo systemctl enable --now containerd
-Esto genera el fichero /usr/usr/local/lib/systemd/system/containerd.service
-4 - Seguidamente especificamos este archivo de configuración de containerd en el daemon de containerd:
-sudo vi /usr/local/lib/systemd/system/containerd.service
-ExecStart=/usr/local/bin/containerd -c /etc/containerd/config.toml
-5 - Configurar servicio containerd para que el directorio de almacenamiento persistente (pods, addons y plugins, etc). Se modifica con el parámetro root y state al iniciar el servicio con systemd (alternativamente se puede crear un archivo de configuración, ver https://github.com/containerd/containerd/blob/main/docs/ops.md#:~:text=%2D%2Droot%20 value%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20containerd %20root%20directory , archivo /etc/containerd/config.toml https://containerd.io/docs/getting-started/ ).
-root = "/usr/local/pr/kamino/var/lib/containerd" state = "/usr/local/pr/kamino/run/containerd"
-6 - Recargamos systemd:
-systemctl daemon-reload
-7 - Reiniciamos el servicio de containerd:
-systemctl restart containerd
-8- Test: levantar contenedor de alpine
-nerdctl run --rm -it alpine:latest
-
-**Paquetes:** nerdctl-full-0.14.0-linux-amd64.tar.gz , nginx-alpine.tar
-
-**Scripts:** install-containerd-nerdctl.sh
-
-**Probado en:** master.
-
-**Falta por probar en:** worker, registry, bastión.
-
-**Reorganización repositorio de Gitlab de Transformación**
-
-Se ha creado un repositorio en Gitlab con los roles de Ansible para instalar en cada máquina que corresponda los programas y dependencias automáticamente .
-
-## **Script inicial**
-
-Si la máquina virtual es nueva, se debe crear el script en la máquina local ( **scripts/setup-host.sh** ) para configurar el hostname , la IP y los usuarios de la misma.
-
-## **Playbooks de instalación**
+### Playbooks de instalación
 
 Para la instalación de los diferentes aplicativos de la transformación se han creado los siguientes roles de Ansible ( dentro de scripts/ansible-playbooks ) que instalan diferentes paquetes para cada tipo de instancia diferente:
 
@@ -79,9 +40,12 @@ Esto ejecutará el role de common en la máquina especificada en el parámetro l
 
 `ansible-playbook -i inventario --limit <máquina> --tags <tag> sites.yaml`
 
+Desde aquí revisar:
+  
+  
 ## **Paso 3: Instalación y configuración de Docker y Harbor, Creación y configuración del Registry**
 
-Se ha creado un role de Ansible que instala Docker y sus dependencias , seguidamente lo configura para que la ruta donde crea los contenedores sea /usr/local/pr/kamino/var/lib/docker/overlay2.  Para las pruebas se ha utilizado la máquina del loadbalancer ( 192.168.112.139 ) aunque finalmente se llamará registry.cin o similar.
+Se ha creado un role de Ansible que instala Docker y sus dependencias , seguidamente lo configura para que la ruta donde crea los contenedores sea /usr/local/pr/kamino/var/lib/docker/overlay2.  Para las pruebas se puede utilizar la máquina del registry ( 192.168.112.186 ) 
 
 Seguidamente, se instala Harbor cargando las imágenes de Docker forma offline y se configura mediante la creación de una CA custom la cual firma la clave privada y certificado y asigna al Nginx que levanta harbor. Se ha preconfigurado el instalador para que instale Trivy , chartmuseum y Harbor de forma offline sin que accedan a Internet salvo para descargar nuevas imágenes no presentes ( install.sh --with-trivy --with-chartmuseum ).
 
@@ -102,7 +66,7 @@ Al menos son necesarios los siguientes ficheros en la ruta roles/registry/files:
 - **trivy.db** ( Base de datos de CVEs de las imágenes de Docker )
 - **v3.ext** ( x509 v3 extension file para la creación del certificado del Registry )
 
-Los ficheros se pueden encontrar en la siguiente carpeta del Drive.
+
 
 Para ejecutar este playbook bajamos el repositorio de Gitlab mencionado anteriormente en una máquina con Ansible instalado ( con Python 3.5 o superior ) , después bajamos los ficheros mencionados anteriormente en la ruta roles/registry/files y lo ejecutamos mediante los siguientes comandos:
 
@@ -118,32 +82,28 @@ Si se desea realizar una instalación completa, primero de los paquetes comunes 
 
 De esta manera también es necesario bajar los ficheros comunes ( roles/common/files) del Drive al directorio local de nuestro PC con Ansible.
 
-URL Registry Actual Funcionando =>
 
-[https://192.168.112.139/account/sign-in?redirect_url=%2Fharbor%2Fprojects](https://192.168.112.139/account/sign-in?redirect_url=%2Fharbor%2Fprojects)
-
-(Credenciales las mismas que el Registry actual de Producción )
 
 ### **Configurar Clientes**
 
-Para conectarse a este Registry es necesario importar el certificado **loadbalancer.cin.cert** del Registry ( [loadbalancer.cin.cert](https://drive.google.com/file/d/1qlqy7vXCh2HvbGDUhyHSQRyZeF7JKvMe/view?usp=sharing)  )  a la ruta /**etc/docker/certs.d/loadbalancer.cin** ( es necesario crearla )  y después reiniciar el servicio de Docker.
+Para conectarse a este Registry es necesario importar el certificado **registry.cert** del Registry ( [registry.cert.cert] a la ruta /**etc/docker/certs.d/registry** ( es necesario crearla )  y después reiniciar el servicio de Docker.
 
 Añadimos de forma temporal el host al fichero de hosts:
 
-**echo "192.168.112.139 loadbalancer loadbalancer.cin" >> /etc/hosts**
+**echo "192.168.112.186 registry registry" >> /etc/hosts**
 
 Después nos logueamos contra el Registry ( usuario admin) :
 
-**docker login loadbalancer.cin:443**
+**docker login registry:443**
 
 Para bajarnos imágenes de Internet mediante el proxy:
 
-**docker pull loadbalancer.cin:443/proxy_docker_hub/bitnami/openldap:2.5.11**
+**docker pull registry:443/proxy_docker_hub/bitnami/openldap:2.5.11**
 
 O bien de Kubernetes (repositorio k8s.gcr.io) :
 
-**docker pull loadbalancer.cin:443/k8s.gcr.io/pause:3.5**
-**docker pull loadbalancer.cin:443/k8s.gcr.io/coredns/coredns:v1.8.4**
+**docker pull registry:443/k8s.gcr.io/pause:3.5**
+**docker pull lregistry:443/k8s.gcr.io/coredns/coredns:v1.8.4**
 
 Se puede observar que el Registry ha accedido mediante el proxy al repositorio de Internet k8s.gcr.io y ha bajado las imágenes requeridas.
 
