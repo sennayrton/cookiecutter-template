@@ -2,7 +2,7 @@
 
 # The IP address or hostname to access admin UI and registry service.
 # DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
-hostname: {{ ip_registry }}
+hostname: {{ registry_hostname }}
 
 # http related config
 http:
@@ -12,10 +12,10 @@ http:
 # https related config
 https:
   # https port for harbor, default is 443
-  port: 443
+  port: {{ registry_port }}
   # The path of cert and key files for nginx
-  certificate: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cin.cert
-  private_key: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cin.key
+  certificate: /usr/local/{{ entorno }}/kamino/registry/data/cert/registry.cin.cert
+  private_key: /usr/local/{{ entorno }}/kamino/registry/data/cert/registry.cin.key
 
 # # Uncomment following will enable tls communication between all harbor components
 # internal_tls:
@@ -31,12 +31,12 @@ https:
 # The initial password of Harbor admin
 # It only works in first time to install harbor
 # Remember Change the admin password from UI after launching Harbor.
-harbor_admin_password: {{ harbor_admin_password }}
+harbor_admin_password: cylonb0x
 
 # Harbor DB configuration
 database:
   # The password for the root user of Harbor DB. Change this before any production use.
-  password: {{ harbor_admin_password }}
+  password: cylonb0x
   # The maximum number of connections in the idle connection pool. If it <=0, no idle connections are retained.
   max_idle_conns: 100
   # The maximum number of open connections to the database. If it <= 0, then there is no limit on the number of open connections.
@@ -44,7 +44,7 @@ database:
   max_open_conns: 900
 
 # The default data volume
-data_volume: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data
+data_volume: /usr/local/{{ entorno }}/kamino/registry/data
 
 # Harbor Storage settings by default is using /data dir on local filesystem
 # Uncomment storage_service setting If you want to using external storage
@@ -77,7 +77,7 @@ trivy:
   # If the flag is enabled you have to download the `trivy-offline.tar.gz` archive manually, extract `trivy.db` and
   # `metadata.json` files and mount them in the `/home/scanner/.cache/trivy/db` path.
   skip_update: false
-  offline_scan: true
+  offline_scan: false
   #
   # insecure The flag to skip verifying registry certificate
   insecure: false
@@ -118,7 +118,7 @@ log:
     # are all valid.
     rotate_size: 1000M
     # The directory on your host that store log
-    location: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/logs
+    location: /usr/local/{{ entorno }}/kamino/registry/logs
 
   # Uncomment following lines to enable external syslog endpoint.
   # external_endpoint:
@@ -130,7 +130,7 @@ log:
   #   port: 5140
 
 #This attribute is for migrator to detect the version of the .cfg file, DO NOT MODIFY!
-_version: 2.4.0
+_version: 2.7.1
 
 # Uncomment external_database if using external database.
 # external_database:
@@ -188,17 +188,17 @@ _version: 2.4.0
 # Add domain to the `no_proxy` field, when you want disable proxy
 # for some special registry.
 proxy:
-  http_proxy: {{ proxy }}
-  https_proxy: {{ proxy }}
-  no_proxy: localhost|{{ ip_registry }}|{{ hostname_registry }}|{{ registry_domain }}
+  http_proxy: http://10.200.140.230:80
+  https_proxy: http://10.200.140.230:80
+  no_proxy: localhost|192.168.112.139|registry|registry.cin
   components:
     - core
     - jobservice
 
-# metric:
-#   enabled: false
-#   port: 9090
-#   path: /metrics
+metric:
+  enabled: false
+  port: 9090
+  path: /metrics
 
 # Trace related config
 # only can enable one trace provider(jaeger or otel) at the same time,
