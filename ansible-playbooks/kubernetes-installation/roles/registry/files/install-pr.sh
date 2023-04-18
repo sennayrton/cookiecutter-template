@@ -54,7 +54,7 @@ cd $workdir
 h2 "[Step $item]: checking if docker is installed ..."; let item+=1
 check_docker
 
-h2 "[Step $item]: checking docker-compose is installed ..."; let item+=1
+h2 "[Step $item]: checking docker compose is installed ..."; let item+=1
 check_dockercompose
 
 if [ -f harbor*.tar.gz ]
@@ -88,14 +88,14 @@ fi
 ./prepare $prepare_para
 echo ""
 
-if [ -n "$(docker-compose ps -q)"  ]
+if [ -n "$(docker compose ps -q)"  ]
 then
     note "stopping existing Harbor instance ..." 
-    docker-compose down -v
+    docker compose down -v
 fi
 echo ""
 
 h2 "[Step $item]: starting Harbor ..."
-docker-compose up -d
+docker compose up -d
 
 success $"----Harbor has been installed and started successfully.----"
