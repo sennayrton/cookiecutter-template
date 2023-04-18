@@ -1,16 +1,7 @@
 ---
-- name: Extraemos el contenido del fichero
-  unarchive:
-    src: "files/python-offline.tar.gz"
-    dest: "/tmp"
-    owner: root
-    group: root
-    mode: '0744'
 
-- name: Ejecutamos el script de instalación de Python (también instala sus dependencias)
-  command: "/tmp/python-offline/install-python.sh"
+- name: Instalamos Python 3.9
+  dnf:
+    name: python3.9
+    state: latest
 
-- name: Borramos los ficheros generados en /tmp/python-offline/
-  file:
-    state: absent
-    path: /tmp/python-offline/
