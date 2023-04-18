@@ -1,9 +1,6 @@
 ---
 # tasks file for kubernetes
 
-- name: configurar /etc/hosts de todas las maquinas
-  import_tasks: config-etchosts.yaml
-
 - name: Instalar paquetes common
   import_tasks: common-packet.yaml
   tags: common-packet
