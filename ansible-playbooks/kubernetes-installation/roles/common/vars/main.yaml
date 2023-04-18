@@ -1,47 +1,23 @@
 ---
+
 common:
   - zip
-  - gzip
-  - unzip
-  - htop
   - rsync
   - wget
-  - nano
   - telnet
-  - open-vm-tools
   - net-tools
   - sshpass
-  - perl-Git
+  - vim
+  - nano
+  - chrony
   - git
-  - git-lfs
-  - openssl-libs
-  - openssl
-  - gssproxy
-  - keyutils
-  - libbasicobjects
-  - libcollection
-  - libevent
-  - libini_config
-  - libnfsidmap
-  - libpath_utils
-  - libref_array
-  - libtirpc
-  - libverto-libevent
   - nfs-utils
-  - quota
-  - quota-nls
-  - rpcbind
-  - tcp_wrappers
-  - libpcap
+  - openssl
   - tcpdump
-  - krb5-libs
-  - nspr
-  - nss
-  - nss-softokn
-  - nss-softokn-freebl
-  - nss-sysinit
-  - nss-tools
-  - nss-util
-  - zlib
-  - postgresql-libs
-  - postgresql
+
+cqlsh:
+  - click-8.1.3-py3-none-any.whl
+  - geomet-0.2.1.post1-py3-none-any.whl
+  - six-1.16.0-py2.py3-none-any.whl
+  - cassandra_driver-3.25.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl
+  - cqlsh-6.1.0-py3-none-any.whl
