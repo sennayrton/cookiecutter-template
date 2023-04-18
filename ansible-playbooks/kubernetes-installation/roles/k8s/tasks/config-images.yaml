@@ -27,7 +27,7 @@
   with_items: "{{  result_images_list  }}"
   when: inventory_hostname == groups['masters'][0]
 
-- name: Subimos las imagenes la registry
+- name: Subimos las imagenes al registry
   shell: |
     nerdctl push {{ registry_domain }}:{{ registry_port }}/transformacion/{{  item.split('/') | last  }}
   with_items: "{{  result_images_list  }}"
