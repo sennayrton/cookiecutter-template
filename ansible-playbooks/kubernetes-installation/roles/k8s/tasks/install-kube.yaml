@@ -77,5 +77,60 @@
   # si el registry tiene salida a internet por proxy:
   #shell:
   #  for image in $(kubeadm config images list); do nerdctl pull $image; done
+  
+  
+  ---
+
+- name: Permitir ver el bridged traffic a iptables
+  shell: |
+    cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    br_netfilter
+    EOF
+
+    cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+    net.bridge.bridge-nf-call-ip6tables = 1
+    net.bridge.bridge-nf-call-iptables = 1
+    EOF
+    modprobe br_netfilter
+    sysctl --system
+
+- name: Instalar dependencias y paquetes de kubeadm , kubelet y kubectl
+  yum:
+    name: "{{ item }}"
+    state: present
+    disable_excludes: "kubernetes"
+  with_items: "{{ kube_packages }}"
+
+- name: Copiamos la configuración de crictl en la ruta /etc/
+  copy:
+    src: "files/crictl.yaml"
+    dest: "/etc/crictl.yaml"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0644'
+
+
+#- name: Baja las imágenes de Kubernetes versión {{ kubernetes_version }}
+#  shell: kubeadm config images pull --kubernetes-version {{ kubernetes_version }} --image-repository {{ registry_domain }}:{{ registry_port }}/registry.k8s.io --kubernetes-version {{ kubernetes_version }}
+#  ignore_errors: yes
+#  become: yes
+
+
+#- name: Baja las imágenes de coredns necesarias para Kubernetes {{ kubernetes_version }}
+#  shell: kubeadm config images pull --kubernetes-version {{ kubernetes_version }} --image-repository {{ registry_domain }}:{{ registry_port }}/registry.k8s.io/coredns --kubernetes-version {{ kubernetes_version }}
+#  ignore_errors: yes
+#  become: yes
+
+
+#- name: Importar imágenes de kube 
+  # si el registry no tiene salida a internet por proxy:
+  #shell: |
+  #  cd /tmp/kube_images
+  #  ls * | while read image; do nerdctl load < $image; done
+
+  # si el registry tiene salida a internet por proxy:
+  #shell:
+  #  for image in $(kubeadm config images list); do nerdctl pull $image; done
+
     
 
