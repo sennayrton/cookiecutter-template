@@ -1,28 +1,14 @@
 ---
-nerdctl_version: 0.18.0
+kubernetes_version: "1.26.3"
+
+
+depend_containerd:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
 
 kube_packages:
-    # Output de: yumdownloader --resolve kubelet kubeadm kubectl --disableexcludes=kubernetes
-    - 4d300a7655f56307d35f127d99dc192b6aa4997f322234e754f16aaa60fd8906-cri-tools-1.23.0-0.x86_64.rpm
-    - 68a98b2ae673eef4a5ddbf1f3c830db0df8fbb888e035aea6054677d88f8a8bc-kubelet-1.23.6-0.x86_64.rpm
-    - 868c4a6ee448d1e8488938812a19a991b5132c81de511cd737d93493b98451cc-kubectl-1.23.6-0.x86_64.rpm
-    - 89104c7beafab5f04d6789e5425963fc8f91ba9711c9603f1ad89003cdea4fe4-kubeadm-1.23.6-0.x86_64.rpm
-    - conntrack-tools-1.4.4-7.el7.x86_64.rpm
-    - db7cb5cb0b3f6875f54d10f02e625573988e3e91fd4fc5eef0b1876bb18604ad-kubernetes-cni-0.8.7-0.x86_64.rpm
-    - libnetfilter_cthelper-1.0.0-11.el7.x86_64.rpm
-    - libnetfilter_cttimeout-1.0.0-7.el7.x86_64.rpm
-    - libnetfilter_queue-1.0.2-2.el7_2.x86_64.rpm
-    - socat-1.7.3.2-2.el7.x86_64.rpm
+    - kubelet
+    - kubeadm
+    - kubectl
 
-image_pause_version: 3.6
-
-# En principio no será necesario si el registry tiene salida a internet mediante proxy
-#kube_images:
-    # Output de: for image in $(kubeadm config images list); do nerdctl pull $image; done; mkdir k8s-images; cd k8s-images; for image in $(kubeadm config images list); do nerdctl save $image > $(echo $image | awk -F "/" '{print $NF}').tar; done
-#    - kube-apiserver:v1.23.6.tar
-#    - kube-controller-manager:v1.23.6.tar
-#    - kube-scheduler:v1.23.6.tar
-#    - kube-proxy:v1.23.6.tar
-#    - pause:3.6.tar
-#    - etcd:3.5.1-0.tar
-#    - coredns:v1.8.6.tar
