@@ -14,7 +14,7 @@
     state: directory
 
 - name: Instalamos Docker y sus dependencias definidas en la variable docker
-  dnf:
+  yum:
     name: "{{ item }}"
     state: latest
   with_items: "{{ docker }}"
@@ -30,14 +30,14 @@
   systemd:
     name: docker
     state: stopped
-  become: true  
-  
+  become: true
+
 - name: Paramos el Socket de Docker
   systemd:
     name: docker.socket
     state: stopped
   become: true
-  
+
 - name: Copiamos el servicio de Docker custom a /usr/lib/systemd/system/docker.service
   template:
     src: "templates/docker.service.j2"
@@ -50,9 +50,15 @@
   systemd:
     daemon_reload: yes
   become: true
-  
+
 - name: Reiniciamos el servicio de Docker con los cambios realizados
   systemd:
     state: started
     name: docker
+  become: true
+
+- name: Habilitamos el servicio de Docker
+  systemd:
+    name: docker
+    enabled: true
   become: true
