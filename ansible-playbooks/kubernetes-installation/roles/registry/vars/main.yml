@@ -8,4 +8,3 @@ docker:
   - docker-compose-plugin
   
 harbor_version: "v2.7.1"
-
