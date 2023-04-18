@@ -5,6 +5,7 @@ extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1={{ registry_domain }}
-DNS.2={{ hostname_registry }}
-IP:{{ ip_registry }}
+DNS.1={{ registry_hostname }}
+DNS.2=registry
+DNS.3=registry2
+IP={{ registry_ip}}
