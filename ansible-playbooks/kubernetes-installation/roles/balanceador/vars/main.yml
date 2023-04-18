@@ -3,6 +3,8 @@
 haproxy:
   - haproxy
 
+keepalived_network: 24
+keepalived_password: "{{ vault_keepalived_password }}""
 
 keepalived:
   - keepalived
