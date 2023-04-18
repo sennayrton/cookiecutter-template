@@ -1,7 +1,7 @@
 ---
-# tasks file for Docker Registry
+# tasks file for kubernetes
 
-- name: Instala las dependencias de Docker , docker-ce y docker-compose
+- name: Instala Docker-CE y Docker Compose
   import_tasks: install-docker.yaml
   tags: docker-install
 
