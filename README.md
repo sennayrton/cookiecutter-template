@@ -2,11 +2,11 @@
 
 Anteproyecto TFG:
 
-https://docs.google.com/document/d/14jtKZ1BafWy0Z6jRlCZRp5Q9oeYtuPq-/edit?usp=sharing&ouid=105273510410775418296&rtpof=true&sd=true
+https://docs.google.com/document/d/14jtKZ1BafWy0Z6jRlCZRp5Q9oeYtuPq-/edit?usp=sharing&ouid=102399462771146888117&rtpof=true&sd=true
 
 TFG:
 
-https://docs.google.com/document/d/1zDeCvBRdHxGBPP7pIMV_s16iTAd8iWBk/edit?usp=sharing&ouid=116331202800646242877&rtpof=true&sd=true
+https://docs.google.com/document/d/1zDeCvBRdHxGBPP7pIMV_s16iTAd8iWBk/edit?usp=sharing&ouid=102399462771146888117&rtpof=true&sd=true
 
 ### Descripción
 
