@@ -9,10 +9,8 @@ master ansible_host=192.168.112.183 ansible_ssh_user=root
 worker1 ansible_host=192.168.112.184 ansible_ssh_user=root
 worker2 ansible_host=192.168.112.185 ansible_ssh_user=root
 
-[registry]
 registry ansible_host=192.168.112.186 ansible_ssh_user=root
 
-[bastion]
 bastion ansible_host=192.168.112.190 ansible_ssh_user=root
 
 [balanceadores]
