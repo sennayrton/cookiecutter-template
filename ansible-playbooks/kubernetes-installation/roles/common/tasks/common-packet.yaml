@@ -1,7 +1,7 @@
 ---
 
-- name: Instalamos los paquetes definidos en la variable common
-  dnf:
+- name: Instalar paquetes common
+  ansible.builtin.package:
     name: "{{ item }}"
     state: latest
   with_items: "{{ common }}"
