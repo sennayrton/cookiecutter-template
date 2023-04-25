@@ -16,5 +16,5 @@ registry ansible_host=192.168.112.186 ansible_ssh_user=root
 bastion ansible_host=192.168.112.190 ansible_ssh_user=root
 
 [balanceadores]
-balanceador1 ansible_host=192.168.112.187 ansible_ssh_user=root
-balanceador2 ansible_host=192.168.112.188 ansible_ssh_user=root
+loadbalancer1 ansible_host=192.168.112.187 ansible_ssh_user=root
+loadbalancer2 ansible_host=192.168.112.188 ansible_ssh_user=root
