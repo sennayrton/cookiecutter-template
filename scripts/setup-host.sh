@@ -9,9 +9,9 @@
 ###############
 
 ENTORNO=pr # pr para PRO, ei para INT y DEV
-NODO=$1 # Depende del componente
-USER=$2
-GROUP=$2
+NODO=hostname #hostname: master, worker...
+USER=xpkami01
+GROUP=gpkami01
 PASS=M1gr4c10n!
 USER_DIR=/usr/local/$ENTORNO/$USER
 UUID_LINE=$(uuidgen ens192)
@@ -33,6 +33,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias ll='ls -la'
 alias k='kubectl'
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
         . /etc/bashrc
