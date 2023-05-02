@@ -20,6 +20,7 @@ hostname_worker2: worker2
 hostname_registry: registry
 hostname_loadbalancer1: loadbalancer1
 hostname_loadbalancer2: loadbalancer2
+hostname_bastion: bastion
 
 # IP's
 ip_master: 192.168.112.183
@@ -28,7 +29,7 @@ ip_worker2: 192.168.112.185
 ip_registry: 192.168.112.186
 ip_loadbalancer1: 192.168.112.187
 ip_loadbalancer2: 192.168.112.188
-ip_vipa: 192.168.112.189
+# ip_vipa: 192.168.112.189
 ip_bastion: 192.168.112.190
 
 # Proxy Docker Hub
