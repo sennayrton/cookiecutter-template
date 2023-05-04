@@ -40,6 +40,9 @@ if [ -f /etc/bashrc ]; then
 fi
 
 #export PS1="🔱⛵ [\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ "
+export PS1="🔱⛵\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ "
+export http_proxy=http://10.200.140.230:80
+export https_proxy=http://10.200.140.230:80
 
 # If not running interactively, don't do anything
 case $- in
