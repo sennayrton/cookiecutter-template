@@ -26,7 +26,6 @@ Para la instalación de los diferentes aplicativos de la transformación se han 
 - registry ( Role que instala las dependencias y aplicaciones para el Registry de Docker )
 - k8s ( Role que instala las dependencias y aplicaciones para los nodos workers y masters de Kubernetes )
 - etcd ( Role que instala las dependencias y aplicaciones para los nodos etcd )
-- bastion ( Role que instala las dependencias y aplicaciones para los nodos bastión de Kubernetes )
 - balanceador ( Role que instala las dependencias y aplicaciones para los balanceadores de Kubernetes )
 
 Para ejecutar estos roles sobre una máquina con Ansible instalado debemos tener la VPN de CIN activa y ejecutar el siguiente comando para ejecutar un determinado role:
@@ -108,14 +107,7 @@ O bien de Kubernetes (repositorio k8s.gcr.io) :
 Se puede observar que el Registry ha accedido mediante el proxy al repositorio de Internet k8s.gcr.io y ha bajado las imágenes requeridas.
 
 
-### **Creación y configuración del Bastion
-Paquetes a instalar: kube-ps1 Scripts relacionados:
-Prompt para kubernetes
-Descomprimir kube-ps1.tar.gz en /opt/kube-ps1
-Añadir a /usr/local/pr/kuka/home/.bashrc lo siguiente:
-#Kube-ps1
-source /opt/kube-ps1/kube-ps1.sh
-PS1='[\u@\h \W $(kube_ps1)]\$ '
+
 
 
 
