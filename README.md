@@ -85,7 +85,7 @@ De esta manera también es necesario bajar los ficheros comunes ( roles/common/f
 
 ### **Configurar Clientes**
 
-Para conectarse a este Registry es necesario importar el certificado **registry.cert** del Registry ( [registry.cert.cert] a la ruta /**etc/docker/certs.d/registry** ( es necesario crearla )  y después reiniciar el servicio de Docker.
+Para conectarse a este Registry es necesario importar el certificado **registry.cert** del Registry ( [registry.cert] a la ruta /**etc/docker/certs.d/registry** ( es necesario crearla )  y después reiniciar el servicio de Docker.
 
 Añadimos de forma temporal el host al fichero de hosts:
 
@@ -102,7 +102,7 @@ Para bajarnos imágenes de Internet mediante el proxy:
 O bien de Kubernetes (repositorio k8s.gcr.io) :
 
 **docker pull registry:443/k8s.gcr.io/pause:3.5**
-**docker pull lregistry:443/k8s.gcr.io/coredns/coredns:v1.8.4**
+**docker pull registry:443/k8s.gcr.io/coredns/coredns:v1.8.4**
 
 Se puede observar que el Registry ha accedido mediante el proxy al repositorio de Internet k8s.gcr.io y ha bajado las imágenes requeridas.
 
