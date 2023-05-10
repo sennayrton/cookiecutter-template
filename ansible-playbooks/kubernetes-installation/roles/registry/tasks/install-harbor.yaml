@@ -1,0 +1,278 @@
+---
+
+- name: Confirmamos que el servicio de Docker está corriendo
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: docker
+
+- name: Confirmamos que el binario de docker-compose está en /usr/local/bin/
+  shell: command -v docker-compose
+  register: is_docker_compose_install
+  ignore_errors: yes
+
+- debug: msg="{{ is_docker_compose_install.stdout }}"
+  when: is_docker_compose_install.rc == 0
+  ignore_errors: no
+
+- name: Copiamos el fichero harbor-offline-installer-{{ harbor_version }}.tgz en /tmp
+  copy:
+    src: "files/harbor-offline-installer-{{ harbor_version }}.tgz"
+    dest: "/tmp/harbor-offline-installer-{{ harbor_version }}.tgz"
+    owner: root
+    group: root
+    mode: '0744'
+
+- name: Descomprimimos harbor-offline-installer-{{ harbor_version }}.tgz en /usr/local/{{ entorno }}/{{ user_home_dir }}
+  unarchive:
+    src: "/tmp/harbor-offline-installer-{{ harbor_version }}.tgz"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/"
+    remote_src: yes
+
+- name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/registry si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rwx,g=rwx,o=r
+    state: directory
+
+- name: Copiamos los ficheros de Harbor a /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
+  become: yes
+  become_user: root
+  shell: cp -pr /usr/local/{{ entorno }}/{{ user_home_dir }}/harbor/* /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/
+
+- name: Cambiamos los permisos de /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
+  file:
+    path: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
+    state: directory
+    recurse: yes
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+
+- name: Copiamos el fichero de instalación modificado de Harbor en /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
+  copy:
+    src: "files/harbor.yml"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/harbor.yml"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0754'
+
+- name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rwx,g=rwx,o=r
+    state: directory
+
+- name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/logs si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/logs"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rwx,g=rwx,o=r
+    state: directory
+
+- name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/var/lib/docker/tmp si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/var/lib/docker/tmp"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}" 
+    mode: u=rwx,g=rwx,o=r
+    recurse: yes
+    state: directory
+
+- name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rwx,g=rwx
+    recurse: yes
+    state: directory
+
+- name: Creamos la clave privada de la CA custom en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+  command: openssl genrsa -out ca.key 4096
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+
+- name: Creamos el certificado de la CA custom en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+  command: openssl req -x509 -new -nodes -sha512 -days 3650 -subj "/C=ES/ST=Madrid/L=Madrid/O=GMV/OU=CIN/CN=registry" -key ca.key -out ca.crt
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+
+- name: Creamos una clave privada para el Registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+  command: openssl genrsa -out registry.key 4096
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+
+- name: Generamos un CSR del Registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+  command: openssl req -sha512 -new -subj "/C=ES/ST=Madrid/L=Madrid/O=GMV/OU=CIN/CN=registry" -key registry.key -out registry.csr
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+
+- name: Copiamos el fichero x509 v3 extension file custom en /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+  template:
+    src: "templates/v3.ext.j2"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/v3.ext"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0740'
+
+- name: Generamos el certificado del Registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+  command: openssl x509 -req -sha512 -days 365 -extfile v3.ext -CA ca.crt -CAkey ca.key -CAcreateserial -in registry.csr -out registry.crt
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+
+- name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/ si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rwx,g=rwx
+    recurse: yes
+    state: directory
+
+- name: Copiamos el certificado del registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/
+  copy:
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.crt"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.crt"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0640'
+    remote_src: yes
+
+- name: Copiamos la clave privada del registry en  la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/
+  copy:
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.key"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.key"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0440'
+    remote_src: yes
+
+- name: Convertimos el certificado del registry a .cert para que Docker lo lea como un certificado cliente
+  command: openssl x509 -inform PEM -in registry.crt -out registry.cert
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/
+
+- name: Creamos el directorio /etc/docker/certs.d/registry/ si no existe
+  file:
+    path: "/etc/docker/certs.d/registry/"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: u=rwx,g=rwx,o=r
+    recurse: yes
+    state: directory
+
+- name: Copiamos el certificado del Registry a la ruta /etc/docker/certs.d/registry/
+  copy:
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cert"
+    dest: "/etc/docker/certs.d/registry/registry.cert"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0640'
+    remote_src: yes
+
+- name: Copiamos la clave privada del Registry a la ruta /etc/docker/certs.d/registry/
+  copy:
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.key"
+    dest: "/etc/docker/certs.d/registry/registry.key"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0440'
+    remote_src: yes
+
+- name: Copiamos la CA custom a la ruta /etc/docker/certs.d/registry/
+  copy:
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/ca.crt"
+    dest: "/etc/docker/certs.d/registry/ca.crt"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0640'
+    remote_src: yes
+
+- name: Copiamos el certificado del Registry a la ruta /etc/pki/ca-trust/source/anchors/
+  copy:
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.crt"
+    dest: "/etc/pki/ca-trust/source/anchors/registry.crt"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: '0640'
+    remote_src: yes
+
+- name: Actualizamos los certificados del SO
+  become: yes
+  become_user: root
+  command: update-ca-trust
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
+
+- name: Copiamos el fichero de deamon de Docker para que confie en el Registry
+  become: yes
+  become_user: root
+  copy:
+    src: "files/daemon.json"
+    dest: "/etc/docker/daemon.json"
+    owner: root
+    group: root
+    mode: '0744'
+
+- name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/trivy-adapter/db si no existe
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/trivy-adapter/db"
+    owner: "10000"
+    group: "10000"
+    mode: '0754'
+    recurse: yes
+    state: directory
+
+
+- name: Reiniciamos Docker para que lea los cambios
+  systemd:
+    state: restarted
+    name: docker
+
+- name: Instalamos Harbor con Trivy y Chartmuseum 
+  become: yes
+  become_user: root
+  script: files/install-{{ entorno }}.sh --with-trivy --with-chartmuseum
+  register: harbor_install
+
+- debug: msg="{{ harbor_install.stdout }}"
+  ignore_errors: no
+
+- name: Paramos Harbor para actualizar las rutas
+  command: docker compose down
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
+
+- name: Copiamos el fichero de docker-compose.yml a la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/
+  become: yes
+  become_user: root
+  copy:
+    src: "files/docker-compose.yml"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/docker-compose.yml"
+    owner: "10000"
+    group: "10000"
+    mode: '0744'
+
+- name: Arrancamos Harbor con las rutas actualizadas
+  command: docker compose up -d
+  args:
+    chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
+
+- name: Removemos los paquetes ya instalados de Harbor
+  file:
+    path: "/usr/local/{{ entorno }}/{{ user_home_dir }}/harbor"
+    state: absent
+
+- name: Removemos los paquetes de Harbor en /tmp
+  file:
+    path: "/tmp/harbor-offline-installer-{{ harbor_version }}.tgz"
+    state: absent
+
+- name: Añadimos el hostname puesto en el certificado en /etc/hosts para el registry
+  shell: |
+    echo "192.168.112.186 registry registry" >> /etc/hosts
