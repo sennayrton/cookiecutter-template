@@ -3,16 +3,16 @@ masters
 workers
 
 [masters]
-master ansible_host=192.168.112.183 ansible_ssh_user=root
+master ansible_host=192.168.112.183 ansible_connection=ssh
 
 [workers]
-worker1 ansible_host=192.168.112.184 ansible_ssh_user=root
-worker2 ansible_host=192.168.112.185 ansible_ssh_user=root
+worker1 ansible_host=192.168.112.184 ansible_connection=ssh
+worker2 ansible_host=192.168.112.185 ansible_connection=ssh
 
-registry ansible_host=192.168.112.186 ansible_ssh_user=root
+registry ansible_host=192.168.112.186 ansible_connection=ssh
 
-bastion ansible_host=192.168.112.190 ansible_ssh_user=root
+bastion ansible_host=192.168.112.190 ansible_connection=ssh
 
 [balanceadores]
-loadbalancer1 ansible_host=192.168.112.187 ansible_ssh_user=root
-loadbalancer2 ansible_host=192.168.112.188 ansible_ssh_user=root
+loadbalancer1 ansible_host=192.168.112.187 ansible_connection=ssh
+loadbalancer2 ansible_host=192.168.112.188 ansible_connection=ssh
