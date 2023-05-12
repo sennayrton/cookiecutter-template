@@ -77,11 +77,6 @@
   with_items:
     - br_netfilter
     - overlay
-    - ip_vs
-    - ip_vs_rr
-    - ip_vs_wrr
-    - ip_vs_sh
-    - nf_conntrack
     
 - name: Create the .conf file to load the modules at bootup
   ansible.builtin.template:
@@ -118,10 +113,18 @@
     - {key: net.bridge.bridge-nf-call-iptables,  value: 1}
     - {key: net.ipv4.ip_forward,  value: 1}
     
-- name: Add kubernetes repository
+- name: Add kubernetes repository and proxy
   ansible.builtin.template:
     src: 'kubernetes.repo.j2'
     dest: /etc/yum.repos.d/kubernetes.repo
+  
+- name: Add RHEL proxy repository
+    blockinfile: 
+      state: present
+      insertafter: EOF
+      dest: /etc/yum.repos.d/almalinux.repo
+      content: |
+        proxy=http://10.200.140.230:80
     
 - name: Update system packages
   package:
