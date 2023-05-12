@@ -15,3 +15,7 @@ common:
   - openssl
   - tcpdump
   - curl
+
+modules:
+  - br_netfilter
+  - overlay
