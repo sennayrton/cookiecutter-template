@@ -14,3 +14,4 @@ common:
   - nfs-utils
   - openssl
   - tcpdump
+  - curl
