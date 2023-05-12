@@ -1,11 +1,11 @@
 ---
-#Pendiente eliminar quiza
+# TODO PROBAR
 - name: Ensure chrony package is installed
   ansible.builtin.package:
     name: chrony
     state: present
     
-#Pendiente eliminar quiza
+# TODO PROBAR
 - name: Enable and start chronyd service
   ansible.builtin.service:
     name: chronyd
@@ -37,20 +37,20 @@
     mode: u=rwx,g=rwx,o=r
     state: directory
 
-#Pendiente eliminar quiza
+# TODO PROBAR
 - name: Customize .bashrc
-  shell:
-    cmd: |
-    cat << EOF >> .bashrc
-    alias k='kubectl'
-    if [ -f /etc/bashrc ]; then
+  lineinfile:
+    path: .bashrc
+    state: present
+    line: "{{ item }}"
+  with_items:
+  - 'alias k='kubectl''
+  - 'if [ -f /etc/bashrc ]; then
         . /etc/bashrc
-    fi
-    export PS1="🔱⛵ [\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ "
-    export http_proxy=http://10.200.140.230:80
-    export https_proxy=http://10.200.140.230:80
-    EOF
-
+    fi'  
+   - 'export PS1="🔱⛵\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ "' 
+   - 'export http_proxy=http://10.200.140.230:80'
+   - 'export https_proxy=http://10.200.140.230:80'
 
 - name: Load .bashrc at user login
   shell: source .bashrc && echo "source ~/.bashrc" > .profile
