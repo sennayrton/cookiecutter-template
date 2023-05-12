@@ -22,8 +22,8 @@
     state: directory
 
 - name: Customize .bashrc
-  shell:
-   cmd: cat << EOF >> /usr/local/ei/xpkami01/.bashrc
+  shell: |
+    cat << EOF >> /usr/local/ei/xpkami01/.bashrc
 
 - name: Make virtual environment
   shell: source /home/username/.bashrc && echo "source ~/.bashrc" > /usr/local/ei/xpkami01/.profile
@@ -62,8 +62,7 @@
     dest: /etc/hosts 
     
 - name: Disable SWAP because k8s can't work with swap enabled (1/2)
-  ansible.builtin.shell: |
-    swapoff -a
+  ansible.builtin.shell: swapoff -a
 
 - name: Disable SWAP in fstab because k8s can't work with swap enabled (2/2)
   ansible.builtin.replace:
@@ -135,4 +134,8 @@
     state: stopped
     enabled: no
     
-
+- name: Para que se apliquen los cambios
+  ansible.builtin.shell: sysctl --system
+  
+- name: Reinicio de la máquina
+  ansible.builtin.shell: reboot
