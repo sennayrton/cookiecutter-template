@@ -12,6 +12,7 @@ entorno: pr
 user_name: xpkami01
 user_group: gpkami01
 user_home_dir: kamino
+selinux_state: permissive
 
 # hostnames
 hostname_master: master
