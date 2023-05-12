@@ -1,0 +1,109 @@
+---
+- name: Configure timezone on all nodes
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Ensure chrony package is installed
+  ansible.builtin.package:
+    name: chrony
+    state: present
+    
+- name: Enable and start chronyd service
+  ansible.builtin.service:
+    name: chronyd
+    state: started
+    enabled: yes
+- name: Synchronize time manually
+  ansible.builtin.shell:  chronyc sources
+
+- name: Disable SWAP because k8s can't work with swap enabled (1/2)
+  ansible.builtin.shell: |
+    swapoff -a
+
+- name: Disable SWAP in fstab because k8s can't work with swap enabled (2/2)
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+.*)$'
+    replace: '# \1'
+
+- name: Load required modules
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - br_netfilter
+    - overlay
+    - ip_vs
+    - ip_vs_rr
+    - ip_vs_wrr
+    - ip_vs_sh
+    - nf_conntrack
+    
+- name: Create the .conf file to load the modules at bootup
+  ansible.builtin.template:
+    src: kernel_modules.conf.j2
+    dest: /etc/modules-load.d/k8s_kernel_modules.conf
+
+- name: Modify sysctl entries
+  ansible.posix.sysctl:
+    name: '{{ item.key }}'
+    value: '{{ item.value }}'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  ignore_errors: True
+  with_items:
+    - {key: net.bridge.bridge-nf-call-ip6tables, value: 1}
+    - {key: net.bridge.bridge-nf-call-iptables,  value: 1}
+    - {key: net.ipv4.ip_forward,  value: 1}
+    
+- name: Put SELinux in permissive mode
+  selinux:
+    policy: targeted
+    state: "{{ selinux_state }}"
+    
+- name: Setup required sysctl params
+  ansible.posix.sysctl:
+    name: '{{ item.key }}'
+    value: '{{ item.value }}'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  with_items:
+    - {key: net.bridge.bridge-nf-call-ip6tables, value: 1}
+    - {key: net.bridge.bridge-nf-call-iptables,  value: 1}
+    - {key: net.ipv4.ip_forward,  value: 1}
+    
+- name: Add kubernetes repository
+  ansible.builtin.template:
+    src: 'kubernetes.repo.j2'
+    dest: /etc/yum.repos.d/kubernetes.repo
+    
+- name: Update system packages
+  package:
+    name: "*"
+    state: latest
+
+- name: Install some packages needed to configure the nodes
+  ansible.builtin.package:
+    name: "{{ item }}"
+  loop:
+    - "{{ basic_packages }}"
+  
+- name: Disable firewalld service
+  ansible.builtin.service:
+    name: firewalld
+    state: stopped
+    enabled: no
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
