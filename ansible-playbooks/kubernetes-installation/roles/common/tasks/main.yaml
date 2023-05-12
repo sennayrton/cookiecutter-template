@@ -1,6 +1,10 @@
 ---
 # tasks file for kubernetes
 
+- name: Setup previo para las maquinas
+  import_tasks: setup.yaml
+  tags: setup
+  
 - name: Instalar paquetes common
   import_tasks: common-packet.yaml
   tags: common-packet
