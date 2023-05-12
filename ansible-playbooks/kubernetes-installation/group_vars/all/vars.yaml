@@ -8,11 +8,12 @@ registry_pass: "{{ vault_registry_pass }}"
 # entorno : cambiar para instalar cada cluster
 entorno: pr
 
-# comun para todas las maquinas , realmente luego será kamino el user_home_dir , xpkami01 el user_name y gpkami01 el user_group
+# comun para todas las maquinas
 user_name: xpkami01
 user_group: gpkami01
 user_home_dir: kamino
 selinux_state: permissive
+default_user_password: despliegue14.
 
 # hostnames
 hostname_master: master
