@@ -1,10 +1,11 @@
 ---
-
+#Pendiente eliminar quiza
 - name: Ensure chrony package is installed
   ansible.builtin.package:
     name: chrony
     state: present
     
+#Pendiente eliminar quiza
 - name: Enable and start chronyd service
   ansible.builtin.service:
     name: chronyd
@@ -12,7 +13,22 @@
     enabled: yes
 - name: Synchronize time manually
   ansible.builtin.shell:  chronyc sources
-
+  
+- name: Put SELinux in permissive mode
+  selinux:
+    policy: targeted
+    state: "{{ selinux_state }}"
+  
+- name: Ensure group "gpkami01" exists
+  ansible.builtin.group:
+    name: gpkami01
+    state: present
+   
+- name: Create Users Task
+  user:
+    name: "{{ user_name }}"
+    state: present
+    
 - name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }} si no existe
   file:
     path: "/usr/local/{{ entorno }}/{{ user_home_dir }}"
@@ -21,33 +37,25 @@
     mode: u=rwx,g=rwx,o=r
     state: directory
 
+#Pendiente eliminar quiza
 - name: Customize .bashrc
-  shell: |
-    cat << EOF >> /usr/local/ei/xpkami01/.bashrc
+  shell:
+    cmd: |
+    cat << EOF >> .bashrc
+    alias k='kubectl'
+    if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+    fi
+    export PS1="🔱⛵ [\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ "
+    export http_proxy=http://10.200.140.230:80
+    export https_proxy=http://10.200.140.230:80
+    EOF
+
 
 - name: Load .bashrc at user login
-  shell: source /home/username/.bashrc && echo "source ~/.bashrc" > /usr/local/ei/xpkami01/.profile
+  shell: source .bashrc && echo "source ~/.bashrc" > .profile
   args:
     executable: /bin/bash
-
-- name: Ensure group "gpkami01" exists
-  ansible.builtin.group:
-    name: gpkami01
-    state: present
-    
-- name: Create group
-  group:
-    name: "{{ user_group }}"
-    state: present
-    
-- name: Create Users Task
-  user:
-    name: "{{ item }}"
-    state: present
-    password: "{{ default_user_password | password_hash('sha512','A512') }}"
-    shell: /bin/bash
-    group: "{{ user_group }}"
-  with_items: "{{ user_name }}"
             
 - name: Recursively change ownership of a directory
   file:
@@ -75,15 +83,11 @@
     regexp: '^([^#].*?\sswap\s+.*)$'
     replace: '# \1'
 
-- name: Load required modules (1/2)
+- name: Load required modules
   community.general.modprobe:
-    name: br_netfilter
+    name: '{{ item }}'
     state: present
-    
-- name: Load required modules (2/2)
-  community.general.modprobe:
-    name: overlay
-    state: present
+  with_items: '{{ modules }}'
     
 - name: Create the .conf file to load the modules at bootup
   ansible.builtin.template:
@@ -102,11 +106,6 @@
     - {key: net.bridge.bridge-nf-call-ip6tables, value: 1}
     - {key: net.bridge.bridge-nf-call-iptables,  value: 1}
     - {key: net.ipv4.ip_forward,  value: 1}
-    
-- name: Put SELinux in permissive mode
-  selinux:
-    policy: targeted
-    state: "{{ selinux_state }}"
     
 - name: Setup required sysctl params
   ansible.posix.sysctl:
