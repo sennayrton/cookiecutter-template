@@ -28,7 +28,7 @@
     state: directory
     
 - name: Ensure group gpkami01 exists
-  ansible.builtin.shell:  groupdadd gpkami01
+  ansible.builtin.shell:  groupadd gpkami01
    
 - name: Create Users xpkami01
   ansible.builtin.shell:  useradd xpkami01 -g gpkami01 -d /usrl/local/ei/xpkami01
