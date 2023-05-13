@@ -1,5 +1,5 @@
 ---
-# tasks file for kubernetes
+
 
 - name: Setup previo para las maquinas
   import_tasks: setup.yaml
