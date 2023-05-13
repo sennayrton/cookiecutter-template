@@ -28,10 +28,12 @@
     
 - name: Aseguramos que el grupo gpkami01 existe y sino lo creamos
   ansible.builtin.shell:  groupadd gpkami01
-   
+  ignore_errors: true
+  
 - name: Aseguramos que el usuario xpkami01 existe y sino lo creamos
   ansible.builtin.shell:  useradd xpkami01 -g gpkami01 -d /usrl/local/ei/xpkami01
-
+  ignore_errors: true
+  
 - name: Customizizamos el .bashrc
   blockinfile:
     dest: ~/.bashrc
