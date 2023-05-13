@@ -18,17 +18,7 @@
   selinux:
     policy: targeted
     state: "{{ selinux_state }}"
-  
-- name: Ensure group "gpkami01" exists
-  ansible.builtin.group:
-    name: gpkami01
-    state: present
-   
-- name: Create Users Task
-  user:
-    name: "{{ user_name }}"
-    state: present
-    
+
 - name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }} si no existe
   file:
     path: "/usr/local/{{ entorno }}/{{ user_home_dir }}"
@@ -36,6 +26,12 @@
     group: "{{ user_group }}"
     mode: u=rwx,g=rwx,o=r
     state: directory
+    
+- name: Ensure group gpkami01 exists
+  ansible.builtin.shell:  groupdadd gpkami01
+   
+- name: Create Users xpkami01
+  ansible.builtin.shell:  useradd xpkami01 -g gpkami01 -d /usrl/local/ei/xpkami01
 
 # TODO PROBAR
 - name: Customize .bashrc
@@ -119,6 +115,14 @@
     - {key: net.bridge.bridge-nf-call-iptables,  value: 1}
     - {key: net.ipv4.ip_forward,  value: 1}
     
+- name: Borramos almalinux repo para crear uno nuevo con plantilla
+  ansible.builtin.shell: rm -f /etc/yum.repos.d/almalinux.repo
+  
+- name: Add almalinux repository and proxy
+  ansible.builtin.template:
+    src: 'almalinux.repo.j2'
+    dest: /etc/yum.repos.d/almalinux.repo
+    
 - name: Add kubernetes repository and proxy
   ansible.builtin.template:
     src: 'kubernetes.repo.j2'
@@ -138,5 +142,6 @@
 - name: Para que se apliquen los cambios
   ansible.builtin.shell: sysctl --system
   
+#TODO quizá eliminar
 - name: Reinicio de la máquina
   ansible.builtin.shell: reboot
