@@ -1,20 +1,19 @@
 ---
-# TODO PROBAR
-- name: Ensure chrony package is installed
+
+- name: Aseguramos que chrony package esta instalado
   ansible.builtin.package:
     name: chrony
     state: present
     
-# TODO PROBAR
-- name: Enable and start chronyd service
+- name: Habilitar e iniciar el servicio chronyd
   ansible.builtin.service:
     name: chronyd
     state: started
     enabled: yes
-- name: Synchronize time manually
+- name: Sincronizar la hora manualmente
   ansible.builtin.shell:  chronyc sources
   
-- name: Put SELinux in permissive mode
+- name: Ponemos SELinux en modo permisivo
   selinux:
     policy: targeted
     state: "{{ selinux_state }}"
@@ -27,70 +26,67 @@
     mode: u=rwx,g=rwx,o=r
     state: directory
     
-- name: Ensure group gpkami01 exists
+- name: Aseguramos que el grupo gpkami01 existe y sino lo creamos
   ansible.builtin.shell:  groupadd gpkami01
    
-- name: Create Users xpkami01
+- name: Aseguramos que el usuario xpkami01 existe y sino lo creamos
   ansible.builtin.shell:  useradd xpkami01 -g gpkami01 -d /usrl/local/ei/xpkami01
 
-# TODO PROBAR
-- name: Customize .bashrc
-  lineinfile:
-    path: .bashrc
-    state: present
-    line: "{{ item }}"
-  with_items:
-  - 'alias k='kubectl''
-  - 'if [ -f /etc/bashrc ]; then
+- name: Customizizamos el .bashrc
+  blockinfile:
+    dest: ~/.bashrc
+    block: |-
+      alias k='kubectl'
+      if [ -f /etc/bashrc ]; then
         . /etc/bashrc
-    fi'  
-   - 'export PS1="🔱⛵\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$ "' 
-   - 'export http_proxy=http://10.200.140.230:80'
-   - 'export https_proxy=http://10.200.140.230:80'
+      fi  
+      export PS1="🔱⛵\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$"
+      export http_proxy=http://10.200.140.230:80
+      export https_proxy=http://10.200.140.230:80
 
-- name: Load .bashrc at user login
+- name: Carga por defecto del .bashrc en el inicio de sesión del usuario
   shell: source .bashrc && echo "source ~/.bashrc" > .profile
   args:
     executable: /bin/bash
             
-- name: Recursively change ownership of a directory
+- name: Cambiar recursivamente la propiedad del directorio home
   file:
     path: "{{ user_home_dir }}"
     recurse: yes
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
 
-- name: Add group to sudoers
+- name: Agregamos el grupo a sudoers
   shell: echo "gpkami01 ALL=(ALL) ALL" >> /etc/sudoers
   args:
     executable: /bin/bash
     
-- name: Generate /etc/hosts file
+- name: Generamos el archivo /etc/hosts con una plantilla
   ansible.builtin.template:
     src: hosts.j2
     dest: /etc/hosts 
     
-- name: Disable SWAP because k8s can't work with swap enabled (1/2)
+- name: Deshabilitamos la SWAP porque k8s no puede funcionar con swap habilitado (1/2)
   ansible.builtin.shell: swapoff -a
 
-- name: Disable SWAP in fstab because k8s can't work with swap enabled (2/2)
+- name: Deshabilitamos la SWAP porque k8s no puede funcionar con swap habilitado (2/2)
   ansible.builtin.replace:
     path: /etc/fstab
     regexp: '^([^#].*?\sswap\s+.*)$'
     replace: '# \1'
 
-- name: Load required modules
+- name: Cargamos los modulos necesarios
   community.general.modprobe:
     name: '{{ item }}'
     state: present
   with_items: '{{ modules }}'
     
-- name: Create the .conf file to load the modules at bootup
+- name: Creamos el archivo .conf para cargar los módulos en el arranque
   ansible.builtin.template:
     src: kernel_modules.conf.j2
     dest: /etc/modules-load.d/k8s_kernel_modules.conf
 
-- name: Modify sysctl entries
+- name: Modificamos entradas de sysctl
   ansible.posix.sysctl:
     name: '{{ item.key }}'
     value: '{{ item.value }}'
@@ -103,7 +99,7 @@
     - {key: net.bridge.bridge-nf-call-iptables,  value: 1}
     - {key: net.ipv4.ip_forward,  value: 1}
     
-- name: Setup required sysctl params
+- name: Configuramos los parámetros sysctl requeridos
   ansible.posix.sysctl:
     name: '{{ item.key }}'
     value: '{{ item.value }}'
@@ -118,22 +114,27 @@
 - name: Borramos almalinux repo para crear uno nuevo con plantilla
   ansible.builtin.shell: rm -f /etc/yum.repos.d/almalinux.repo
   
-- name: Add almalinux repository and proxy
+- name: Añadimos el repositorio de almalinux y el proxy
   ansible.builtin.template:
     src: 'almalinux.repo.j2'
     dest: /etc/yum.repos.d/almalinux.repo
     
-- name: Add kubernetes repository and proxy
+- name: Añadimos el repositorio de kubernetes y el proxy
   ansible.builtin.template:
     src: 'kubernetes.repo.j2'
     dest: /etc/yum.repos.d/kubernetes.repo
+   
+- name: Añadimos el repositorio de docker y el proxy
+  ansible.builtin.template:
+    src: 'docker-ce.repo.j2'
+    dest: /etc/yum.repos.d/docker-ce.repo
     
-- name: Update system packages
+- name: Actualizamos paquetes del sistema
   package:
     name: "*"
     state: latest
   
-- name: Disable firewalld service
+- name: Desactivamos el servicio de cortafuegos
   ansible.builtin.service:
     name: firewalld
     state: stopped
@@ -142,6 +143,6 @@
 - name: Para que se apliquen los cambios
   ansible.builtin.shell: sysctl --system
   
-#TODO quizá eliminar
-- name: Reinicio de la máquina
-  ansible.builtin.shell: reboot
+- name: Reinicio lento a la maquina para aplicar las actualizaciones
+  ansible.builtin.reboot:
+    reboot_timeout: 3600
