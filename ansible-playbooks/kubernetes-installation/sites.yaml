@@ -4,7 +4,13 @@
   become_method: sudo
   roles:
     - common
-
+    
+- hosts: localhost
+  become: true
+  become_method: sudo
+  roles:
+    - semaphore
+    
 - hosts: registry
   become: true
   become_method: sudo
