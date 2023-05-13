@@ -1,0 +1,66 @@
+---
+
+- name: Creamos directorio /usr/local/{{ entorno }}/{{ user_home_dir }}/docker si no existe
+  file:
+    path: "/usr/local/docker"
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=r
+    state: directory
+
+- name: Instalamos Docker y sus dependencias definidas en la variable docker
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ dockerlocalhost }}"
+
+- name: Creamos el Servicio de Docker
+  systemd:
+    name: docker
+    state: started
+  become: true
+
+- name: Paramos el Servicio de Docker
+  systemd:
+    name: docker
+    state: stopped
+  become: true
+
+- name: Paramos el Socket de Docker
+  systemd:
+    name: docker.socket
+    state: stopped
+  become: true
+
+- name: Copiamos el servicio de Docker custom a /usr/lib/systemd/system/docker.service
+  template:
+    src: "templates/docker.service.localhost.j2"
+    dest: "/usr/lib/systemd/system/docker.service"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Recargamos la configuración de systemd
+  systemd:
+    daemon_reload: yes
+  become: true
+
+- name: Reiniciamos el servicio de Docker con los cambios realizados
+  systemd:
+    state: started
+    name: docker
+  become: true
+
+- name: Habilitamos el servicio de Docker
+  systemd:
+    name: docker
+    enabled: true
+  become: true
+  
+- name: Añadimos el servicio de Docker compose custom a /home/spis/
+  ansible.builtin.template:
+    src: 'docker-composelocalhost.yml.j2'
+    dest: /home/spis/
+
+- name: Levantamos semaphore con la DB configurada MySQL
+  ansible.builtin.shell: docker compose up  
