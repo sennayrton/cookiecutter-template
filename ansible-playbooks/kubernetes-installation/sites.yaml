@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: setup
   become: true
   become_method: sudo
   roles:
