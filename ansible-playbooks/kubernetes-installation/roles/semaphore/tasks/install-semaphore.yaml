@@ -56,11 +56,14 @@
     name: docker
     enabled: true
   become: true
-  
+    
 - name: Añadimos el servicio de Docker compose custom a /home/spis/
-  ansible.builtin.template:
-    src: 'docker-compose.yml.j2'
-    dest: /home/spis/
+  template:
+    src: "templates/docker-compose.yml.j2"
+    dest: "/home/spis/docker-compose.yaml"
+    owner: root
+    group: root
+    mode: '0755'
 
 - name: Levantamos semaphore con la DB configurada MySQL
   ansible.builtin.shell: docker compose up  
