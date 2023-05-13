@@ -24,8 +24,6 @@ Para la instalación de los diferentes aplicativos de la transformación se han 
 
 - common ( Role que instala las dependencias comunes a todas las máquinas y que se debe ejecutar inicialmente en todas )
 - registry ( Role que instala las dependencias y aplicaciones para el Registry de Docker )
-- k8s ( Role que instala las dependencias y aplicaciones para los nodos workers y masters de Kubernetes )
-- etcd ( Role que instala las dependencias y aplicaciones para los nodos etcd )
 - balanceador ( Role que instala las dependencias y aplicaciones para los balanceadores de Kubernetes )
 
 Para ejecutar estos roles sobre una máquina con Ansible instalado debemos tener la VPN de CIN activa y ejecutar el siguiente comando para ejecutar un determinado role:
