@@ -11,6 +11,12 @@
   roles:
     - registry
 
+- hosts: localhost
+  become: true
+  become_method: sudo
+  roles:
+    - registry
+    
 - hosts: k8s
   become: true
   become_method: sudo
