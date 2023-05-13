@@ -1,0 +1,5 @@
+---
+
+- name: Instalacion de Docker-CE y Docker Compose en localhost
+  import_tasks: install-semaphore.yaml
+  tags: install-semaphore
