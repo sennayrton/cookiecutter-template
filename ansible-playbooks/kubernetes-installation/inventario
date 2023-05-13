@@ -20,6 +20,8 @@ loadbalancer2 ansible_host=192.168.112.188 ansible_connection=ssh
 
 bastion ansible_host=192.168.112.190 ansible_connection=ssh
 
+localhost
+
 [all:vars]
 
 # Specify full version, by default latest stable version will be used
