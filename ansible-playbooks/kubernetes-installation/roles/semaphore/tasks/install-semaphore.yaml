@@ -59,7 +59,7 @@
   
 - name: Añadimos el servicio de Docker compose custom a /home/spis/
   ansible.builtin.template:
-    src: 'docker-composelocalhost.yml.j2'
+    src: 'docker-compose.yml.j2'
     dest: /home/spis/
 
 - name: Levantamos semaphore con la DB configurada MySQL
