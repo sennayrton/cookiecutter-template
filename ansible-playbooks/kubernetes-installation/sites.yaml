@@ -1,16 +1,24 @@
 ---
-- hosts: setup
-  become: true
-  become_method: sudo
-  roles:
-    - common
-    
 - hosts: localhost
   become: true
   become_method: sudo
   roles:
     - semaphore
     
+#usando el inventario
+- hosts: setup
+  become: true
+  become_method: sudo
+  roles:
+    - common
+    
+#usando el inventario hosts.ini
+- hosts: rke2_cluster
+  become: true
+  become_method: sudo
+  roles:
+    - common
+  
 - hosts: registry
   become: true
   become_method: sudo
