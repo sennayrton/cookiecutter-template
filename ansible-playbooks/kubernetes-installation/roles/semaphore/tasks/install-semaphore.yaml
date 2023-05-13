@@ -34,7 +34,7 @@
 
 - name: Copiamos el servicio de Docker custom a /usr/lib/systemd/system/docker.service
   template:
-    src: "templates/docker.service.localhost.j2"
+    src: "templates/docker.servicelocalhost.j2"
     dest: "/usr/lib/systemd/system/docker.service"
     owner: root
     group: root
