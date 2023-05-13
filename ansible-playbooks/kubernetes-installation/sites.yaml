@@ -16,25 +16,28 @@
   become_method: sudo
   roles:
     - registry
-    
-- hosts: k8s
-  become: true
-  become_method: sudo
-  roles:
-    - k8s
 
-- hosts: masters
+- name: Server play
+  hosts: rke2_servers
+  any_errors_fatal: true
   become: true
-  become_method: sudo
   roles:
-    - etcd
+    - role: rke2_server
+  serial: 1
 
-- hosts: workers
+- name: Agent play
+  hosts: rke2_agents
+  any_errors_fatal: true
   become: true
-  become_method: sudo
   roles:
-    - worker
+    - role: rke2_agent
+  serial: 2
 
+
+
+
+
+#TODO REVISAR
 - hosts: bastion
   become: true
   become_method: sudo
@@ -46,9 +49,3 @@
   become_method: sudo
   roles:
     - balanceador
-
-- hosts: masters
-  become: true
-  become_method: sudo
-  roles:
-    - master
