@@ -7,7 +7,7 @@ loadbalancer2 ansible_host=192.168.112.188 ansible_connection=ssh
 
 bastion ansible_host=192.168.112.190 ansible_connection=ssh
 
-localhost
+127.0.0.1 ansible_connection=local
 
 [all:vars]
 
