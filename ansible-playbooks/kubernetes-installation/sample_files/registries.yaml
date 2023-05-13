@@ -2,5 +2,5 @@
 mirrors:
   docker.io:
     endpoint:
-      - "https://registry.example.com:5000"
+      - "http://registry.example.com:5000"
 
