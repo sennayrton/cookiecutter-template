@@ -13,9 +13,4 @@ bastion ansible_host=192.168.112.190 ansible_connection=ssh
 registry
 balanceadores
 bastion
-rke2_server
-rke2_agents
-
-
-[all:vars]
 
