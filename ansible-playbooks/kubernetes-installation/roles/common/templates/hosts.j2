@@ -8,6 +8,6 @@
 192.168.112.188 loadbalancer2
 192.168.112.189 vipa
 
-{% for host in groups['all'] %}
+{% for host in groups['setup'] %}
 {{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }} {{ hostvars[host]['ansible_facts']['fqdn'] }} {{ hostvars[host]['ansible_facts']['hostname'] }}
 {% endfor %}
