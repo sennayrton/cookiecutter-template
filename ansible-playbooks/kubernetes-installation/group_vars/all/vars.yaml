@@ -36,29 +36,29 @@ ip_loadbalancer2: 192.168.112.188
 # ip_bastion: 192.168.112.190
 
 # Proxy Docker Hub
-proxy_docker_hub: proxy_docker_hub
+# proxy_docker_hub: proxy_docker_hub
 
 # Registry domain
-registry_domain: registry
-registry_hostname: registry
-registry_ip: 192.168.112.186
+# registry_domain: registry
+# registry_hostname: registry
+# registry_ip: 192.168.112.186
 
 # Registry Port
-registry_port: 443
+# registry_port: 443
 
 # Registry admin password
-harbor_admin_password: cylonb0x
+# harbor_admin_password: cylonb0x
 
 # Proxy
-proxy: "http://10.200.140.230:80"
+# proxy: "http://10.200.140.230:80"
 
 # Image versions
-image_pause_version: "3.6"
-etcd_image_version: "3.5.1-0"
+# image_pause_version: "3.6"
+# etcd_image_version: "3.5.1-0"
 
 # Kubernetes version
-kubernetes_version: 1.23.6
+# kubernetes_version: 1.23.6
 
-# POD CIDR
-pod_network_cidr: 10.20.0.0/16
+# PODS CIDR
+# pod_network_cidr: 10.20.0.0/16
 
