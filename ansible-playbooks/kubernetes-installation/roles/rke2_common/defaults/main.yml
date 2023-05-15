@@ -20,6 +20,6 @@ rke2_versioned_yum_repo:
   gpgcheck: true
   gpgkey: "https://rpm.rancher.io/public.key"
   enabled: yes
-  proxy: http://10.200.140.230:80
+  proxy: http://10.200.140.230:80 # aniadimos el proxy para salir a internet
 
 rke2_config: {}
