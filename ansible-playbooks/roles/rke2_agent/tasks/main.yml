@@ -28,6 +28,14 @@
   failed_when: server_url_check.rc >= 2
   changed_when: false
 
+- name: Añadimos la template del proxy a /etc/default/rke2-agent
+  template:
+    src: "templates/rke2-agent.j2"
+    dest: "/etc/default/rke2-agent"
+    owner: root
+    group: root
+    mode: '0755'
+    
 - name: Agregamos URL del servidor al archivo de configuración
   lineinfile:
     dest: /etc/rancher/rke2/config.yaml
