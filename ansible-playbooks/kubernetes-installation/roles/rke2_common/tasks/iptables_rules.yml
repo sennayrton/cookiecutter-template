@@ -1,6 +1,6 @@
 ---
 
-- name: Allow 9345
+- name: Habilitamos el puerto 9345
   iptables:
     action: insert
     chain: INPUT
@@ -10,7 +10,7 @@
     jump: ACCEPT
   when: inventory_hostname in groups['rke2_servers']
 
-- name: Allow 6443
+- name: Habilitamos el puerto 6443
   iptables:
     action: insert
     chain: INPUT
@@ -20,7 +20,7 @@
     jump: ACCEPT
   when: inventory_hostname in groups['rke2_servers']
 
-- name: Allow udp 8472
+- name: Habilitamos el puerto udp 8472
   iptables:
     action: insert
     chain: INPUT
@@ -29,7 +29,7 @@
     ctstate: NEW
     jump: ACCEPT
 
-- name: Allow 10250
+- name: Habilitamos el puerto 10250
   iptables:
     action: insert
     chain: INPUT
@@ -38,7 +38,7 @@
     ctstate: NEW
     jump: ACCEPT
 
-- name: Allow 2379
+- name: Habilitamos el puerto 2379
   iptables:
     action: insert
     chain: INPUT
@@ -48,7 +48,7 @@
     jump: ACCEPT
   when: inventory_hostname in groups['rke2_servers']
 
-- name: Allow 2380
+- name: Habilitamos el puerto 2380
   iptables:
     action: insert
     chain: INPUT
@@ -58,7 +58,7 @@
     jump: ACCEPT
   when: inventory_hostname in groups['rke2_servers']
 
-- name: Allow 30000:32767
+- name: Habilitamos el puerto 30000:32767
   iptables:
     action: insert
     chain: INPUT
@@ -67,7 +67,7 @@
     ctstate: NEW
     jump: ACCEPT
 
-- name: Allow 443
+- name: Habilitamos el puerto 443
   iptables:
     action: insert
     chain: INPUT
@@ -76,47 +76,47 @@
     ctstate: NEW
     jump: ACCEPT
 
-- name: "Allow cluster-cidr forward"
+- name: "Habilitamos cluster-cidr forward"
   iptables:
     action: insert
     chain: FORWARD
     source: '{{ rke2_config["cluster-cidr"] | default("10.42.0.0/16") | string }}'
     jump: ACCEPT
 
-- name: "Allow cluster-cidr forward"
+- name: "Habilitamos cluster-cidr forward"
   iptables:
     action: insert
     chain: FORWARD
     destination: '{{ rke2_config["cluster-cidr"] | default("10.42.0.0/16") | string }}'
     jump: ACCEPT
 
-- name: "Allow cluster-cidr input"
+- name: "Habilitamos cluster-cidr input"
   iptables:
     action: insert
     chain: INPUT
     source: '{{ rke2_config["cluster-cidr"] | default("10.42.0.0/16") | string }}'
     jump: ACCEPT
 
-- name: "Allow cluster-cidr input"
+- name: "Habilitamos cluster-cidr input"
   iptables:
     action: insert
     chain: INPUT
     destination: '{{ rke2_config["cluster-cidr"] | default("10.42.0.0/16") | string }}'
     jump: ACCEPT
 
-- name: Save iptables
+- name: Guardamos iptables
   shell: "iptables-save > /etc/sysconfig/iptables"
   become: true
   changed_when: false
   when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Install iptables-persistent
+- name: Instalamos iptables-persistent
   apt:
     name: iptables-persistent
     state: present
   when: ansible_facts['os_family'] == 'Debian'
 
-- name: Save iptables
+- name: Guardamos iptables
   shell: "iptables-save > /etc/iptables/rules.v4"
   become: true
   changed_when: false
