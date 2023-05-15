@@ -1,5 +1,9 @@
 ---
 
+- name: Instalacion de Docker-CE y Docker Compose en localhost
+  import_tasks: install-semaphore.yaml
+  tags: install-semaphore
+  
 - name: Levantamos semaphore para ver la interfaz de Ansible
   import_tasks: launch-semaphore.yaml
   tags: launch-semaphore
