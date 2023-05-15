@@ -7,6 +7,7 @@
 192.168.112.187 loadbalancer1
 192.168.112.188 loadbalancer2
 
+
 {% for host in groups['setup'] %}
-{{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }} {{ hostvars[host]['ansible_facts']['fqdn'] }} {{ hostvars[host]['ansible_facts']['hostname'] }}
+{{ hostvars[host]['ansible_facts']['fqdn'] }}
 {% endfor %}
