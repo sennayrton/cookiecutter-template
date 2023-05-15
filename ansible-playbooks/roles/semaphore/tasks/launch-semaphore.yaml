@@ -1,0 +1,3 @@
+---
+- name: Levantamos semaphore con la DB configurada MySQL
+  ansible.builtin.shell: docker compose up  
