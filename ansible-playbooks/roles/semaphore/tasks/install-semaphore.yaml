@@ -64,6 +64,3 @@
     owner: root
     group: root
     mode: '0755'
-
-- name: Levantamos semaphore con la DB configurada MySQL
-  ansible.builtin.shell: docker compose up  
