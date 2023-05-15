@@ -1,5 +1,5 @@
 ---
-- name: "Check for images tar.gz in {{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.gz"  # noqa name[template] yaml[line-length]
+- name: "Buscamos imagenes tar.gz en {{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.gz"  # noqa name[template] yaml[line-length]
   stat:
     path: "{{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.gz"
     get_checksum: false
@@ -7,7 +7,7 @@
   delegate_to: 127.0.0.1
   become: false
 
-- name: "Check for images tar.zst in {{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.zst"  # noqa name[template] yaml[line-length]
+- name: "Buscamos imagenes tar.zst en {{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.zst"  # noqa name[template] yaml[line-length]
   stat:
     path: "{{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.zst"
     get_checksum: false
@@ -15,14 +15,14 @@
   delegate_to: 127.0.0.1
   become: false
 
-- name: Add images tar.gz to needed directory if provided
+- name: Agregamos imagenes tar.gz al directorio necesario
   copy:
     src: "{{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.gz"
     dest: /var/lib/rancher/rke2/agent/images/
     mode: '0644'
   when: got_images_gz.stat.exists
 
-- name: Add images tar.zst to needed directory if provided
+- name: Agregamos imagenes tar.zst al directorio necesario
   copy:
     src: "{{ playbook_dir }}/tarball_install/rke2-images.linux-amd64.tar.zst"
     dest: /var/lib/rancher/rke2/agent/images/
