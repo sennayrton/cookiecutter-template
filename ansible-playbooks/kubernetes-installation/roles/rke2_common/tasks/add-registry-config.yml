@@ -1,11 +1,11 @@
 ---
-- name: Create the /etc/rancher/rke2 config dir
+- name: Creamos el directorio de configuración /etc/rancher/rke2
   file:
     path: /etc/rancher/rke2
     state: directory
     recurse: yes
 
-- name: Add registry configuration file
+- name: Agregamos archivo de configuración del registry
   copy:
     src: "{{ registry_config_file_path }}"
     dest: "/etc/rancher/rke2/registries.yaml"
@@ -13,7 +13,7 @@
     owner: root
     group: root
   when: caller_role_name == "server"
-  notify: Restart rke2-server
+  notify: Reiniciar rke2-server
 
 - name: Add registry configuration file
   copy:
@@ -23,4 +23,4 @@
     owner: root
     group: root
   when: caller_role_name == "agent"
-  notify: Restart rke2-agent
+  notify: Reiniciar rke2-agent
