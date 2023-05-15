@@ -21,7 +21,7 @@
   delegate_to: 127.0.0.1
   become: no
 
-- name: Intalacion para SLES/Ubuntu/Tarball
+- name: Instalacion para SLES/Ubuntu/Tarball
   include_tasks: tarball_install.yml
   when:
     - |-
