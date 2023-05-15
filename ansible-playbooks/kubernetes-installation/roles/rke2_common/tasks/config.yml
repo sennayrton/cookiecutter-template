@@ -1,33 +1,33 @@
 ---
-- name: Does the /etc/rancher/rke2 dir exist?
+- name: ¿Existe el directorio /etc/rancher/rke2?
   stat:
     path: /etc/rancher/rke2
   register: rke2_directory
 
-- name: Create the /etc/rancher/rke2 config dir
+- name: Creamos el directorio de configuración /etc/rancher/rke2
   file:
     path: /etc/rancher/rke2
     state: directory
     recurse: yes
   when: not rke2_directory.stat.exists
 
-- name: Does the /etc/rancher/rke2/config.yaml file exist?
+- name: ¿Existe el archivo /etc/rancher/rke2/config.yaml?
   stat:
     path: /etc/rancher/rke2/config.yaml
   register: previous_rke2_config
 
-- name: Read previous_rke2_config
+- name: Leemos la previous_rke2_config
   slurp:
     src: /etc/rancher/rke2/config.yaml
   register: full_orig_rke2_config
   when: previous_rke2_config.stat.exists
 
-- name: Decode contents of slurp
+- name: Decodificamos el contenido de slurp
   set_fact:
     orig_rke2_config: "{{ full_orig_rke2_config['content'] | b64decode }}"
   when: previous_rke2_config.stat.exists
 
-- name: Create the /etc/rancher/rke2/config.yaml file
+- name: Creamos el archivo /etc/rancher/rke2/config.yaml
   file:
     path: /etc/rancher/rke2/config.yaml
     state: touch
@@ -36,22 +36,22 @@
     group: root
   when: not previous_rke2_config.stat.exists
 
-# --node-label value                     (agent/node) Registering and starting kubelet with set of labels
+# --node-label value                     (agent/node) Registro e inicio de kubelet con un conjunto de etiquetas
 
-- name: Get rke2_config node-labels
+- name: Obtenemos las rke2_config node-labels
   set_fact:
     rke2_config_node_labels: "{{ rke2_config['node-label'] | default([]) }}"
 
-- name: Get host var node-labels
+- name: Obtenemos las host var node-labels
   set_fact:
     host_var_node_labels: "{{ node_labels | default([]) }}"
 
-- name: Combine rke2_config node labels and hostvar node labels
+- name: Combinamos rke2_config node labels con hostvar node labels
   set_fact:
     all_node_labels: "{{ rke2_config_node_labels + host_var_node_labels }}"
   changed_when: false
 
-- name: Add node labels to rke2_config
+- name: Aniadimos node labels a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-label"]
@@ -59,26 +59,26 @@
   register: updated_rke2_config
   changed_when: false
 
-- name: Update rke2_config to take value of updated_rke2_config
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   changed_when: false
 
-# --node-taint value                     (agent/node) Registering kubelet with set of taints
-- name: Get rke2_config node-taints
+# --node-taint value                     (agent/node) Registrando kubelet con un conjunto de contaminaciones
+- name: Obtenemos las rke2_config node-taints
   set_fact:
     rke2_config_node_taints: "{{ rke2_config['node-taint'] | default([]) }}"
 
-- name: Get host var node-taints
+- name: Obtenemos las host var node-taints
   set_fact:
     host_var_node_taints: "{{ node_taints | default([]) }}"
 
-- name: Combine rke2_config node taints and hostvar node taints
+- name: Combinamos rke2_config node taints con hostvar node taints
   set_fact:
     all_node_taints: "{{ rke2_config_node_taints + host_var_node_taints }}"
   changed_when: false
 
-- name: Add node labels to rke2_config
+- name: Aniadimos node labels a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-taint"]
@@ -86,13 +86,13 @@
   register: updated_rke2_config
   changed_when: false
 
-- name: Update rke2_config to take value of updated_rke2_config
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   changed_when: false
 
-# --node-ip value, -i value (agent/networking) IPv4/IPv6 addresses to advertise for node
-- name: Add node-ip to rke2_config
+# --node-ip value, -i value (agent/networking) Direcciones IPv4/IPv6 para anunciar el nodo
+- name: Aniadimos node-ip a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-ip"]
@@ -101,14 +101,14 @@
   register: updated_rke2_config
   changed_when: false
 
-- name: Update rke2_config to take value of updated_rke2_config  # noqa no-handler
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config  # noqa no-handler
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   when: (node_ip is defined) and (node_ip|length > 0)
   changed_when: false
 
 # --node-name value (agent/node) Node name [$RKE2_NODE_NAME]
-- name: Add node-name to rke2_config
+- name: Aniadimos node-name a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-name"]
@@ -117,14 +117,14 @@
   register: updated_rke2_config
   changed_when: false
 
-- name: Update rke2_config to take value of updated_rke2_config  # noqa no-handler
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config  # noqa no-handler
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   when: (node_name is defined) and (node_name|length > 0)
   changed_when: false
 
 # --bind-address value (listener) rke2 bind address (default: 0.0.0.0)
-- name: Add bind-address to rke2_config
+- name: Aniadimos bind-address a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["bind-address"]
@@ -133,15 +133,15 @@
   register: updated_rke2_config
   changed_when: false
 
-- name: Update rke2_config to take value of updated_rke2_config  # noqa no-handler
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config  # noqa no-handler
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   when: (bind_address is defined) and (bind_address|length > 0)
   changed_when: false
 
-# --advertise-address value (listener) IPv4 address that apiserver uses
+# --advertise-address value (listener) Dirección IPv4 que usa el apiserver
 # to advertise to members of the cluster (default: node-external-ip/node-ip)
-- name: Add advertise-address to rke2_config
+- name: Aniadimos advertise-address a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["advertise-address"]
@@ -150,14 +150,14 @@
   register: updated_rke2_config
   changed_when: false
 
-- name: Update rke2_config to take value of updated_rke2_config  # noqa no-handler
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config  # noqa no-handler
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   when: (advertise_address is defined) and (advertise_address|length > 0)
   changed_when: false
 
 # --node-external-ip value (agent/networking) IPv4/IPv6 external IP addresses to advertise for node
-- name: Add node-external-ip to rke2_config
+- name: Aniadimos node-external-ip a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-external-ip"]
@@ -166,14 +166,14 @@
   register: updated_rke2_config
   changed_when: false
 
-- name: Update rke2_config to take value of updated_rke2_config  # noqa no-handler
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config  # noqa no-handler
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   when: (node_external_ip is defined) and (node_external_ip|length > 0)
   changed_when: false
 
-# --cloud-provider-name value (agent/node) Cloud provider name
-- name: Add cloud-provider-name to rke2_config
+# --cloud-provider-name value (agent/node) Nombre del proveedor de la nube
+- name: Aniadimos cloud-provider-name a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["cloud-provider-name"]
@@ -181,18 +181,18 @@
   when: (cloud_provider_name is defined) and (cloud_provider_name|length > 0)
   register: updated_rke2_config
 
-- name: Update rke2_config to take value of updated_rke2_config  # noqa no-handler
+- name: Actualizamos rke2_config para que tome el valor de updated_rke2_config  # noqa no-handler
   set_fact:
     rke2_config: "{{ updated_rke2_config.rke2_config }}"
   when: (cloud_provider_name is defined) and (cloud_provider_name|length > 0)
 
-- name: Remove tmp config file
+- name: Eliminamos el archivo de configuración tmp
   ansible.builtin.file:
     path: /tmp/ansible-config.txt
     state: absent
   changed_when: false
 
-- name: Create tmp config.yaml
+- name: Creamos tmp con archivo config.yaml
   copy:
     content: "{{ rke2_config | to_nice_yaml(indent=0) }}"
     dest: /tmp/ansible-config.txt
@@ -201,13 +201,13 @@
     group: root
   changed_when: false
 
-- name: Get original token
+- name: Obtenemos el token original
   set_fact:
     original_token: "{{ orig_rke2_config | regex_search('token: (.+)') }}"
   when: previous_rke2_config.stat.exists
   changed_when: false
 
-- name: Add token to config.yaml
+- name: Agregamos el token al archivo config.yaml
   lineinfile:
     dest: /tmp/ansible-config.txt
     line: "{{ original_token }}"
@@ -216,13 +216,13 @@
   when: previous_rke2_config.stat.exists and original_token | length > 0
   changed_when: false
 
-- name: Get original server
+- name: Obtenemos el servidor original
   set_fact:
     original_server: "{{ orig_rke2_config | regex_search('server: https://(.*):9345') }}"
   when: previous_rke2_config.stat.exists
   changed_when: false
 
-- name: Add server url to config file
+- name: Agregamos la URL del servidor al archivo de configuración
   lineinfile:
     dest: /tmp/ansible-config.txt
     line: "{{ original_server }}"
@@ -231,18 +231,18 @@
   when: previous_rke2_config.stat.exists and original_server | length > 0
   changed_when: false
 
-- name: Stat tmp config
+- name: Configuración de tmp
   stat:
     path: /tmp/ansible-config.txt
   register: tmp_config
   changed_when: false
 
-- name: Get cksum of tmp config
+- name: Obtenemos el cksum de tmp config
   set_fact:
     tmp_sha1: "{{ tmp_config.stat.checksum }}"
   changed_when: false
 
-- name: Drop in final /etc/rancher/rke2/config.yaml
+- name: Introducimos el config.txt al final de /etc/rancher/rke2/config.yaml
   copy:
     src: /tmp/ansible-config.txt
     remote_src: yes
@@ -253,13 +253,13 @@
     backup: yes
   when: not previous_rke2_config.stat.exists or (tmp_sha1 != previous_rke2_config.stat.checksum)
 
-- name: Remove tmp config file
+- name: Eliminamos el archivo de configuración tmp
   ansible.builtin.file:
     path: /tmp/ansible-config.txt
     state: absent
   changed_when: false
 
-- name: Restart rke2-server if package installed and config changed
+- name: Reiniciamos rke2-server si el paquete está instalado y la configuración ha cambiado
   service:
     state: restarted
     name: rke2-server
@@ -268,7 +268,7 @@
     - "ansible_facts.services['rke2-server.service'].state == 'running'"
     - tmp_sha1 != previous_rke2_config.stat.checksum
 
-- name: Restart rke2-agent if package installed and config changed
+- name: Reiniciamos rke2-agent si el paquete está instalado y la configuración ha cambiado
   service:
     state: restarted
     name: rke2-agent
