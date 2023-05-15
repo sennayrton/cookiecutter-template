@@ -36,7 +36,7 @@
     dest: "/etc/default/rke2-server"
     owner: root
     group: root
-    mode: '0755'
+    mode: '0775'
     
 - name: Extraemos el hostname-override del hostname del proceso kubelet  # noqa var-spacing
   set_fact:
