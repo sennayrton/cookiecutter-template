@@ -30,6 +30,14 @@
   delay: 10
   changed_when: false
 
+- name: Añadimos la template del proxy a /etc/default/rke2-server
+  template:
+    src: "templates/rke2-server.j2"
+    dest: "/etc/default/rke2-server"
+    owner: root
+    group: root
+    mode: '0755'
+    
 - name: Extraemos el hostname-override del hostname del proceso kubelet  # noqa var-spacing
   set_fact:
     kubelet_hostname_override_parameter: "{{ kubelet_check.stdout |\
