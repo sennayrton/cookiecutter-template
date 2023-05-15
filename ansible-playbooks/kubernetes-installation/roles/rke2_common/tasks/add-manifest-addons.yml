@@ -1,6 +1,6 @@
 ---
 
-- name: Add manifest addons files
+- name: Agregamos archivos de complementos de manifiesto (manifest addons)
   copy:
     src: "{{ manifest_config_file_path }}"
     dest: "/var/lib/rancher/rke2/server/manifests/"
