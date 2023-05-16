@@ -3,5 +3,5 @@
   tasks:
     - name: "Instalamos Python 3.9"
       dnf:
-        name: python3.9
+        name: zip
         state: latest
