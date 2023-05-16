@@ -14,6 +14,6 @@ loadbalancer2 ansible_host=192.168.112.188 ansible_connection=ssh
 [setup]
 registry
 loadbalancer1
-loadbalancer2
-bastion
+# loadbalancer2
+# bastion
 
