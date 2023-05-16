@@ -1,5 +1,7 @@
+[registry]
 registry ansible_host=192.168.112.186 ansible_connection=ssh
 
+[bastion]
 bastion ansible_host=192.168.112.190 ansible_connection=ssh
 
 [localhost]
