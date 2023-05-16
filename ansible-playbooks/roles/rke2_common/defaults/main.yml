@@ -2,7 +2,7 @@
 tarball_dir: "/usr/local"
 rke2_channel: stable
 audit_policy_config_file_path: ""
-registry_config_file_path: "{{ playbook_dir }}/sample_files/registries.yaml"
+registry_config_file_path: ""
 add_iptables_rules: false
 rke2_common_yum_repo:
   name: rke2-common
@@ -11,7 +11,7 @@ rke2_common_yum_repo:
   gpgcheck: true
   gpgkey: "https://rpm.rancher.io/public.key"
   enabled: yes
-  proxy: http://10.200.140.230:80
+  proxy: http://10.200.140.230:80 # añadimos el proxy para salir a internet
 
 rke2_versioned_yum_repo:
   name: "rke2-v{{ rke2_version_majmin }}"  # noqa var-spacing
@@ -20,6 +20,6 @@ rke2_versioned_yum_repo:
   gpgcheck: true
   gpgkey: "https://rpm.rancher.io/public.key"
   enabled: yes
-  proxy: http://10.200.140.230:80 # aniadimos el proxy para salir a internet
+  proxy: http://10.200.140.230:80 # añadimos el proxy para salir a internet
 
 rke2_config: {}
