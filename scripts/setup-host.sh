@@ -1,9 +1,6 @@
 #!/bin/bash
-
-############
-# Script para configurar rápidamente las máquinas: IP, hostame, usuario, grupo, home, permisos sobre /usr/local/pr/kamino, layout teclado, prompt y bashrc
 # Finalmente se ha optado por hacer todo esto en un playbook (/roles/common/tasks/setup.yaml) para automatizarlo mejor
-############
+# Script para configurar rápidamente las máquinas: IP, hostame, usuario, grupo, home, permisos sobre /usr/local/pr/kamino, layout teclado, prompt y bashrc
 
 ###############
 ## Variables ##
