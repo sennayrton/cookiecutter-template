@@ -6,8 +6,3 @@
 192.168.112.186 registry
 192.168.112.187 loadbalancer1
 192.168.112.188 loadbalancer2
-
-
-{% for host in groups['setup'] %}
-{{ hostvars[host]['ansible_facts']['fqdn'] }}
-{% endfor %}
