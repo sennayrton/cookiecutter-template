@@ -25,12 +25,6 @@
   roles:
     - registry
 
-- hosts: localhost
-  become: true
-  become_method: sudo
-  roles:
-    - registry
-
 - name: Server play
   hosts: rke2_servers
   any_errors_fatal: true
