@@ -1,6 +1,5 @@
 ---
 
-# En nuestro caso solo tenemos un server (master)
 - name: Comprobamos si el archivo de configuración ya tiene token de servidor  # noqa command-instead-of-shell
   command: 'grep -i "^token:" /etc/rancher/rke2/config.yaml'
   register: server_token_check
