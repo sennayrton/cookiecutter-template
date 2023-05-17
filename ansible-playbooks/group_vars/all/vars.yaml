@@ -15,23 +15,23 @@ user_home_dir: kamino
 selinux_state: permissive
 
 # hostnames
-hostname_master: master
+hostname_master1: master1
+hostname_master2: master2
+hostname_master3: master3
 hostname_worker1: worker1
 hostname_worker2: worker2
-hostname_registry: registry
-hostname_loadbalancer1: loadbalancer1
-hostname_loadbalancer2: loadbalancer2
+hostname_worker3: worker3
+# hostname_registry: registry
 # hostname_vipa: vipa
 # hostname_bastion: bastion
 
-
 # IP's
-ip_master: 192.168.112.183
-ip_worker1: 192.168.112.184
-ip_worker2: 192.168.112.185
-ip_registry: 192.168.112.186
-ip_loadbalancer1: 192.168.112.187
-ip_loadbalancer2: 192.168.112.188
+ip_master1: 192.168.112.183
+ip_master2: 192.168.112.184
+ip_master3: 192.168.112.185
+ip_worker1: 192.168.112.186
+ip_worker2: 192.168.112.187
+ip_worker3: 192.168.112.188
 # ip_vipa: 192.168.112.189
 # ip_bastion: 192.168.112.190
 
