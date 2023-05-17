@@ -6,17 +6,17 @@
 
 ## *IP - Hostname - Rol*
 
-### 192.168.112.183	- master - Kubernetes Master y ETCD
+### 192.168.112.183	- master1 - Kubernetes Master1 y ETCD
 
-### 192.168.112.184	- worker1 - Kubernetes Worker1
+### 192.168.112.184	- master2 - Kubernetes Master2 y ETCD
 
-### 192.168.112.185	- worker2 - Kubernetes Worker2
+### 192.168.112.185	- master3 - Kubernetes Master3 y ETCD
 
-### 192.168.112.186	- registry	- Kubernetes Registry
+### 192.168.112.186	- worker1	- Kubernetes Worker1
 
-### 192.168.112.187	- loadbalancer1 - Kubernetes Load Balancer1
+### 192.168.112.187	- worker2 - Kubernetes Worker2
 
-### 192.168.112.188	- loadbalancer2 - Kubernetes Load Balancer2
+### 192.168.112.188	- worker3 - Kubernetes Worker3
 
 ### 192.168.112.190	- bastion - Kubernetes Bastion
 
