@@ -6,7 +6,7 @@
   become: true
   roles:
     - role: rke2_server
-  serial: 1
+  serial: 3
 
 - name: Agent play
   hosts: rke2_agents
@@ -14,4 +14,4 @@
   become: true
   roles:
     - role: rke2_agent
-  serial: 2
+  serial: 3
