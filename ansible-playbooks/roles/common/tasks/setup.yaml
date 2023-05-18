@@ -21,8 +21,8 @@
 - name: Creamos el directorio /usr/local/{{ entorno }}/{{ user_home_dir }} si no existe
   file:
     path: "/usr/local/{{ entorno }}/{{ user_home_dir }}"
-    owner: "{{ user_name }}"
-    group: "{{ user_group }}"
+    owner: root
+    group: root
     mode: u=rwx,g=rwx,o=r
     state: directory
     
@@ -39,6 +39,7 @@
     dest: ~/.bashrc
     block: |-
       alias k='kubectl'
+      alias ll='ls -la'
       if [ -f /etc/bashrc ]; then
         . /etc/bashrc
       fi  

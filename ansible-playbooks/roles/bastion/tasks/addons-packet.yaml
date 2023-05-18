@@ -1,9 +1,0 @@
----
-
-- name: Copiamos el binario de helm en /usr/local/bin/
-  copy:
-    src: "files/helm"
-    dest: "/usr/local/bin/helm"
-    owner: root
-    group: root
-    mode: '0755'

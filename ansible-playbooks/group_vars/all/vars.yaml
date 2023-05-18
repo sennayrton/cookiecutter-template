@@ -15,25 +15,24 @@ user_home_dir: kamino
 selinux_state: permissive
 
 # hostnames
-hostname_master: master
-hostname_worker1: worker1
-hostname_worker2: worker2
-hostname_registry: registry
-hostname_loadbalancer1: loadbalancer1
-hostname_loadbalancer2: loadbalancer2
+hostname_rke2-server1: rke2-server1
+hostname_rke2-server2: rke2-server2
+hostname_rke2-server3: rke2-server3
+hostname_rke2-agent1: rke2-agent1
+hostname_rke2-agent2: rke2-agent2
+hostname_rke2-agent3: rke2-agent3
 # hostname_vipa: vipa
-# hostname_bastion: bastion
-
+# hostname_registry: registry
 
 # IP's
-ip_master: 192.168.112.183
-ip_worker1: 192.168.112.184
-ip_worker2: 192.168.112.185
-ip_registry: 192.168.112.186
-ip_loadbalancer1: 192.168.112.187
-ip_loadbalancer2: 192.168.112.188
+ip_rke2-server1: 192.168.112.183
+ip_rke2-server2: 192.168.112.184
+ip_rke2-server3: 192.168.112.185
+ip_rke2-agent1: 192.168.112.186
+ip_rke2-agent2: 192.168.112.187
+ip_rke2-agent3: 192.168.112.188
 # ip_vipa: 192.168.112.189
-# ip_bastion: 192.168.112.190
+# ip_registry: 192.168.112.190
 
 # Proxy Docker Hub
 # proxy_docker_hub: proxy_docker_hub
@@ -41,7 +40,7 @@ ip_loadbalancer2: 192.168.112.188
 # Registry domain
 # registry_domain: registry
 # registry_hostname: registry
-# registry_ip: 192.168.112.186
+# registry_ip: 192.168.112.190
 
 # Registry Port
 # registry_port: 443

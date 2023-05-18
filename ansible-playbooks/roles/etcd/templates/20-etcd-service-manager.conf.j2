@@ -1,4 +1,0 @@
-[Service]
-ExecStart=
-ExecStart=/usr/bin/kubelet --address=127.0.0.1 --pod_infra_container_image={{ registry_domain }}:{{ registry_port }}/k8s.gcr.io/pause:{{ image_pause_version }} --pod-manifest-path=/etc/kubernetes/manifests --cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=unix:///var/run/containerd/containerd.sock
-Restart=always

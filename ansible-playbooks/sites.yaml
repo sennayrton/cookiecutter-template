@@ -24,16 +24,3 @@
   become_method: sudo
   roles:
     - registry
-
-#TODO REVISAR
-- hosts: bastion
-  become: true
-  become_method: sudo
-  roles:
-    - bastion
-    
-- hosts: balanceadores
-  become: true
-  become_method: sudo
-  roles:
-    - balanceador
