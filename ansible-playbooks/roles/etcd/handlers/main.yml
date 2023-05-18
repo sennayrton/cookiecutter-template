@@ -1,9 +1,0 @@
----
-# handlers file for etcd
-- name: Restart kubelet
-  systemd:
-    name: kubelet
-    state: restarted
-    daemon_reload: yes
-  become: yes
-
