@@ -6,18 +6,19 @@
 
 ## *IP - Hostname - Rol*
 
-### 192.168.112.183	- master - Kubernetes Master y ETCD
+### 192.168.112.183	- master1 (rke2-server1) - Kubernetes Master y ETCD
 
-### 192.168.112.184	- worker1 - Kubernetes Worker1
+### 192.168.112.184	- master2 (rke2-server2) - Kubernetes Master y ETCD
 
-### 192.168.112.185	- worker2 - Kubernetes Worker2
+### 192.168.112.185	- master3 (rke2-server3) - Kubernetes Master y ETCD
 
-### 192.168.112.186	- registry	- Kubernetes Registry
+### 192.168.112.186	- worker1 (rke2-agent1) - Kubernetes Worker1
 
-### 192.168.112.187	- loadbalancer1 - Kubernetes Load Balancer1
+### 192.168.112.187	- worker2 (rke2-agent2) - Kubernetes Worker2
 
-### 192.168.112.188	- loadbalancer2 - Kubernetes Load Balancer2
-
-### 192.168.112.190	- bastion - Kubernetes Bastion
+### 192.168.112.188	- worker3 (rke2-agent3) - Kubernetes Worker3
 
 ### 192.168.112.189	- vipa - Kubernetes Ingress VIP (es sólo una IP)
+
+### 192.168.112.190	- registry - Kubernetes Registry
+
