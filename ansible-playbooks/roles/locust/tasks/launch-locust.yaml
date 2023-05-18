@@ -1,0 +1,3 @@
+---
+- name: Levantamos locust para load test del frontend de k8s
+  ansible.builtin.shell: locust
