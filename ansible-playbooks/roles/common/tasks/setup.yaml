@@ -46,6 +46,7 @@
       export PS1="🔱⛵\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\] \[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$"
       export http_proxy=http://10.200.140.230:80
       export https_proxy=http://10.200.140.230:80
+      export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
 
 - name: Carga por defecto del .bashrc en el inicio de sesión del usuario
   shell: source .bashrc && echo "source ~/.bashrc" > .profile
