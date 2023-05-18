@@ -29,7 +29,15 @@
     insertbefore: BOF
   when:
     - '"server:" not in server_url_check.stdout'
-
+    
+- name: Añadimos la template del proxy a /etc/default/rke2-server
+  template:
+    src: "templates/rke2-server.j2"
+    dest: "/etc/default/rke2-server"
+    owner: root
+    group: root
+    mode: '0775'
+    
 - name: Iniciamos y esperamos al nodo healthy  # noqa var-spacing
   throttle: 1
   block:
