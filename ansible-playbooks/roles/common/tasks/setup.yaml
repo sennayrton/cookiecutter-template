@@ -39,6 +39,7 @@
     dest: ~/.bashrc
     block: |-
       alias k='kubectl'
+      alias ll='ls -la'
       if [ -f /etc/bashrc ]; then
         . /etc/bashrc
       fi  
