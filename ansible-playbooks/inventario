@@ -1,19 +1,11 @@
 [registry]
-registry ansible_host=192.168.112.186 ansible_connection=ssh
+registry ansible_host=192.168.112.190 ansible_connection=ssh
 
-[bastion]
-bastion ansible_host=192.168.112.190 ansible_connection=ssh
+[vipa]
+vipa ansible_host=192.168.112.189 ansible_connection=ssh
 
 [localhost]
 127.0.0.1 ansible_connection=local
 
-[balanceadores]
-loadbalancer1 ansible_host=192.168.112.187 ansible_connection=ssh
-loadbalancer2 ansible_host=192.168.112.188 ansible_connection=ssh
-
 [setup]
 registry
-loadbalancer1
-# loadbalancer2
-# bastion
-
