@@ -34,7 +34,7 @@
   ansible.builtin.shell:  useradd xpkami01 -g gpkami01 -d /usrl/local/ei/xpkami01
   ignore_errors: true
   
-- name: Customizizamos el .bashrc
+- name: Customizamos el .bashrc
   blockinfile:
     dest: ~/.bashrc
     block: |-
@@ -47,6 +47,7 @@
       export http_proxy=http://10.200.140.230:80
       export https_proxy=http://10.200.140.230:80
       export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+      export PATH=${PATH}:/var/lib/rancher/rke2/bin
 
 - name: Carga por defecto del .bashrc en el inicio de sesión del usuario
   shell: source .bashrc && echo "source ~/.bashrc" > .profile
@@ -143,7 +144,10 @@
     name: firewalld
     state: stopped
     enabled: no
-    
+
+- name: Releemos el bashrc
+  ansible.builtin.shell: source ~/.bashrc
+  
 - name: Para que se apliquen los cambios
   ansible.builtin.shell: sysctl --system
   
