@@ -8,7 +8,7 @@
     - semaphore
 
 #levantamos locust en local para load-test del frontend
- - hosts: localhost
+- hosts: localhost
   become: true
   become_method: sudo
   roles:
