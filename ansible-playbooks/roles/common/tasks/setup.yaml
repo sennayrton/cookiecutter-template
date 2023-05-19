@@ -134,10 +134,10 @@
     src: 'docker-ce.repo.j2'
     dest: /etc/yum.repos.d/docker-ce.repo
     
-- name: Actualizamos paquetes del sistema
-  package:
-    name: "*"
-    state: latest
+# - name: Actualizamos paquetes del sistema
+#  package:
+#    name: "*"
+#    state: latest
   
 - name: Desactivamos el servicio de cortafuegos
   ansible.builtin.service:
