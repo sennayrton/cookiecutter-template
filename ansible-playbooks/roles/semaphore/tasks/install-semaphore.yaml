@@ -57,7 +57,7 @@
     enabled: true
   become: true
     
-- name: Añadimos el servicio de Docker compose custom a /home/spis/
+- name: Añadimos el servicio de Docker compose custom a /home/spis/ de localhost
   template:
     src: "templates/docker-compose.yml.j2"
     dest: "/home/spis/docker-compose.yaml"
