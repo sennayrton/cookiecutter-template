@@ -85,3 +85,9 @@
   include_role:
     name: rke2_common
     tasks_from: cis-hardening
+
+- name: Habilitamos la utilización de kubectl por terminal
+  shell: ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl && /usr/local/bin/kubectl completion bash > /usr/share/bash-completion/completions/kubectl && chmod 644 /usr/share/bash-completion/completions/kubectl
+  args:
+    executable: /bin/bash
+    
