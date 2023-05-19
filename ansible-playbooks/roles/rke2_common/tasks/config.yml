@@ -276,3 +276,9 @@
     - ansible_facts.services["rke2-agent.service"] is defined
     - "ansible_facts.services['rke2-agent.service'].state == 'running'"
     - tmp_sha1 != previous_rke2_config.stat.checksum
+
+- name: Habilitamos la utilización de kubectl por terminal
+  shell: ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl && /usr/local/bin/kubectl completion bash > /usr/share/bash-completion/completions/kubectl && chmod 644 /usr/share/bash-completion/completions/kubectl
+  args:
+    executable: /bin/bash
+    
