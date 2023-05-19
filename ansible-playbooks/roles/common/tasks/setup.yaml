@@ -50,7 +50,7 @@
       export PATH=${PATH}:/var/lib/rancher/rke2/bin
 
 - name: Carga por defecto del .bashrc en el inicio de sesión del usuario
-  shell: source .bashrc && echo "source ~/.bashrc" > .profile
+  shell: source ~/.bashrc && echo "source ~/.bashrc" > .profile
   args:
     executable: /bin/bash
             
@@ -144,9 +144,6 @@
     name: firewalld
     state: stopped
     enabled: no
-
-- name: Releemos el bashrc
-  ansible.builtin.shell: source ~/.bashrc
   
 - name: Para que se apliquen los cambios
   ansible.builtin.shell: sysctl --system
