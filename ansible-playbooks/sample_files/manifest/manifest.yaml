@@ -31,7 +31,7 @@
    
    
   
-#   *** DESPLIEGUE DE PROMETHEUS A TRAVES DEL MANIFIESTO ***
+#   *** DESPLIEGUE DE PROMETHEUS Y GRAFANA A TRAVES DEL MANIFIESTO ***
 ---
 apiVersion: v1
 kind: Namespace
@@ -381,8 +381,6 @@ spec:
       - name: read-du
         image: giantswarm/tiny-tools
         imagePullPolicy: Always
-        # FIXME threshold via env var
-        # The
         command:
         - fish
         - --command
