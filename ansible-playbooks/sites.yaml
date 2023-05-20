@@ -7,13 +7,6 @@
   roles:
     - semaphore
 
-#levantamos locust en local para load-test del frontend
-- hosts: localhost
-  become: true
-  become_method: sudo
-  roles:
-    - locust
-
 #usando el inventario
 - hosts: setup
   become: true
