@@ -209,7 +209,7 @@
   args:
     chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
 
-- name: Copiamos el fichero de deamon de Docker para que confie en el Registry
+- name: Copiamos el fichero de daemon de Docker para que confie en el Registry
   become: yes
   become_user: root
   copy:
@@ -236,7 +236,7 @@
 - name: Instalamos Harbor con Trivy y Chartmuseum 
   become: yes
   become_user: root
-  shell: sh install.sh --with-trivy --with-chartmuseum
+  script: files/install.sh --with-trivy --with-chartmuseum
   register: harbor_install
 
 - debug: msg="{{ harbor_install.stdout }}"
@@ -274,4 +274,5 @@
 
 - name: Añadimos el hostname puesto en el certificado en /etc/hosts para el registry
   shell: |
-    echo "192.168.112.190 registry registry" >> /etc/hosts
+    echo "{{ ip_registry }} {{ hostname_registry }}" >> /etc/hosts
+    echo "{{ ip_registry }} {{ registry_domain }}" >> /etc/hosts

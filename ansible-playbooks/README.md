@@ -6,11 +6,11 @@
 
 ## *IP - Hostname - Rol*
 
-### 192.168.112.183	- master1 (rke2-server1) - Kubernetes Master y ETCD
+### 192.168.112.183	- master1 (rke2-server1) - Kubernetes Master, ETCD y control-plane
 
-### 192.168.112.184	- master2 (rke2-server2) - Kubernetes Master y ETCD
+### 192.168.112.184	- master2 (rke2-server2) - Kubernetes Master, ETCD y control-plane
 
-### 192.168.112.185	- master3 (rke2-server3) - Kubernetes Master y ETCD
+### 192.168.112.185	- master3 (rke2-server3) - Kubernetes Master, ETCD y control-plane
 
 ### 192.168.112.186	- worker1 (rke2-agent1) - Kubernetes Worker1
 
