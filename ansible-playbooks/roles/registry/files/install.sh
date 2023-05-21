@@ -54,8 +54,8 @@ cd $workdir
 h2 "[Step $item]: checking if docker is installed ..."; let item+=1
 check_docker
 
-h2 "[Step $item]: checking docker compose is installed ..."; let item+=1
-check_dockercompose
+#h2 "[Step $item]: checking docker compose is installed ..."; let item+=1
+#check_dockercompose
 
 if [ -f harbor*.tar.gz ]
 then

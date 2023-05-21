@@ -5,7 +5,7 @@
     state: started
     daemon_reload: yes
     name: docker
-
+# Antiguamente era docker-compose pero ahora es docker compose
 - name: Confirmamos que el binario de docker-compose está en /usr/local/bin/
   shell: command -v docker compose
   register: is_docker_compose_install
