@@ -51,7 +51,7 @@
     all_node_labels: "{{ rke2_config_node_labels + host_var_node_labels }}"
   changed_when: false
 
-- name: Aniadimos node labels a la configuracion de rke2_config
+- name: Añadimos node labels a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-label"]
@@ -78,7 +78,7 @@
     all_node_taints: "{{ rke2_config_node_taints + host_var_node_taints }}"
   changed_when: false
 
-- name: Aniadimos node labels a la configuracion de rke2_config
+- name: Añadimos node labels a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-taint"]
@@ -92,7 +92,7 @@
   changed_when: false
 
 # --node-ip value, -i value (agent/networking) Direcciones IPv4/IPv6 para anunciar el nodo
-- name: Aniadimos node-ip a la configuracion de rke2_config
+- name: Añadimos node-ip a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-ip"]
@@ -108,7 +108,7 @@
   changed_when: false
 
 # --node-name value (agent/node) Node name [$RKE2_NODE_NAME]
-- name: Aniadimos node-name a la configuracion de rke2_config
+- name: Añadimos node-name a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-name"]
@@ -124,7 +124,7 @@
   changed_when: false
 
 # --bind-address value (listener) rke2 bind address (default: 0.0.0.0)
-- name: Aniadimos bind-address a la configuracion de rke2_config
+- name: Añadimos bind-address a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["bind-address"]
@@ -141,7 +141,7 @@
 
 # --advertise-address value (listener) Dirección IPv4 que usa el apiserver
 # to advertise to members of the cluster (default: node-external-ip/node-ip)
-- name: Aniadimos advertise-address a la configuracion de rke2_config
+- name: Añadimos advertise-address a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["advertise-address"]
@@ -157,7 +157,7 @@
   changed_when: false
 
 # --node-external-ip value (agent/networking) IPv4/IPv6 external IP addresses to advertise for node
-- name: Aniadimos node-external-ip a la configuracion de rke2_config
+- name: Añadimos node-external-ip a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["node-external-ip"]
@@ -173,7 +173,7 @@
   changed_when: false
 
 # --cloud-provider-name value (agent/node) Nombre del proveedor de la nube
-- name: Aniadimos cloud-provider-name a la configuracion de rke2_config
+- name: Añadimos cloud-provider-name a la configuracion de rke2_config
   ansible.utils.update_fact:
     updates:
       - path: rke2_config["cloud-provider-name"]

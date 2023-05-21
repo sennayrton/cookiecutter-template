@@ -7,7 +7,7 @@
     name: docker
 
 - name: Confirmamos que el binario de docker-compose está en /usr/local/bin/
-  shell: command -v docker-compose
+  shell: command -v docker compose
   register: is_docker_compose_install
   ignore_errors: yes
 
@@ -228,7 +228,6 @@
     recurse: yes
     state: directory
 
-
 - name: Reiniciamos Docker para que lea los cambios
   systemd:
     state: restarted
@@ -237,7 +236,7 @@
 - name: Instalamos Harbor con Trivy y Chartmuseum 
   become: yes
   become_user: root
-  script: files/install-{{ entorno }}.sh --with-trivy --with-chartmuseum
+  shell: sh install.sh --with-trivy --with-chartmuseum
   register: harbor_install
 
 - debug: msg="{{ harbor_install.stdout }}"
@@ -275,4 +274,4 @@
 
 - name: Añadimos el hostname puesto en el certificado en /etc/hosts para el registry
   shell: |
-    echo "192.168.112.186 registry registry" >> /etc/hosts
+    echo "192.168.112.190 registry registry" >> /etc/hosts
