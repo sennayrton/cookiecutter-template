@@ -1,0 +1,6 @@
+# ignore all .tgz files
+*.tgz
+# ignore all .db files
+*.db
+# ignore all .gz files
+*.gz
