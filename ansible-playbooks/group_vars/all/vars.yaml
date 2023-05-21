@@ -22,7 +22,7 @@ hostname_rke2-agent1: rke2-agent1
 hostname_rke2-agent2: rke2-agent2
 hostname_rke2-agent3: rke2-agent3
 # hostname_vipa: vipa
-# hostname_registry: registry
+hostname_registry: registry
 
 # IP's
 ip_rke2-server1: 192.168.112.183
@@ -32,32 +32,28 @@ ip_rke2-agent1: 192.168.112.186
 ip_rke2-agent2: 192.168.112.187
 ip_rke2-agent3: 192.168.112.188
 # ip_vipa: 192.168.112.189
-# ip_registry: 192.168.112.190
+ip_registry: 192.168.112.190
 
 # Proxy Docker Hub
-# proxy_docker_hub: proxy_docker_hub
+proxy_docker_hub: proxy_docker_hub
 
 # Registry domain
-# registry_domain: registry
-# registry_hostname: registry
-# registry_ip: 192.168.112.190
+registry_domain: registry
+registry_hostname: registry
+registry_ip: 192.168.112.190
 
 # Registry Port
-# registry_port: 443
+registry_port: 443
 
 # Registry admin password
-# harbor_admin_password: cylonb0x
+harbor_admin_password: cylonb0x
 
 # Proxy
-# proxy: "http://10.200.140.230:80"
+proxy: "http://10.200.140.230:80"
 
 # Image versions
-# image_pause_version: "3.6"
-# etcd_image_version: "3.5.1-0"
+image_pause_version: "3.6"
+etcd_image_version: "3.5.1-0"
 
-# Kubernetes version
-# kubernetes_version: 1.23.6
 
-# PODS CIDR
-# pod_network_cidr: 10.20.0.0/16
 

@@ -8,9 +8,7 @@ Este proyecto tiene como objetivo el diseño y construcción de una instalación
 
 El objetivo al finalizar el proyecto es ser capaz de ofrecer un entorno totalmente funcional de laboratorio en el que se puedan hacer pruebas que conlleven riesgos y donde se puedan probar todo tipo de instalaciones de aplicativos para seguir aprendiendo sobre dicha plataforma, por tanto, un entorno de laboratorio es su principal campo de aplicación.
 
-En el laboratorio de CIN creamos máquinas correspondientes a nodo master/etcd, nodos worker, registry, balanceadores y bastión, todas basadas en RHEL 8.6. En ellos se hará una instalación de kubernetes con todos sus componentes, extensiones y otras utilidades que consideremos interesantes (herramientas, lenguajes de programación, etc), con el objetivo de identificar todos los pasos y paquetes necesarios para realizar una instalación completamente offline en la nueva infraestructura. Importante tener en cuenta que solo dispondremos de un usuario sin permisos de root, que solo tendrá propiedad de la ruta /usr/local/<entorno>/<usuario> , donde tendremos que instalar y almacenar todo.
-
-
+En el laboratorio de CIN creamos máquinas correspondientes a nodo master/etcd, nodos worker, registry todas basadas en RHEL 8.6. En ellos se hará una instalación de kubernetes con todos sus componentes, extensiones y otras utilidades que consideremos interesantes (herramientas, lenguajes de programación, etc), con el objetivo de identificar todos los pasos y paquetes necesarios para realizar una instalación completamente offline en la nueva infraestructura.
 
 ### Playbooks de instalación
 
@@ -18,7 +16,6 @@ Para la instalación de los diferentes aplicativos de la transformación se han 
 
 - common ( Role que instala las dependencias comunes a todas las máquinas y que se debe ejecutar inicialmente en todas )
 - registry ( Role que instala las dependencias y aplicaciones para el Registry de Docker )
-- balanceador ( Role que instala las dependencias y aplicaciones para los balanceadores de Kubernetes )
 
 Para ejecutar estos roles sobre una máquina con Ansible instalado debemos tener la VPN de CIN activa y ejecutar el siguiente comando para ejecutar un determinado role:
 
@@ -27,7 +24,7 @@ Para ejecutar estos roles sobre una máquina con Ansible instalado debemos tener
 Adicionalmente, se pensó en descargar los paquetes necesarios para cada role desde el Drive y meterlos en el directorio local donde se ejecutaría Ansible ( dentro del role en el directorio files).
 Pero finalmente podremos apuntar al repo oficial de RHEL 8.6, por tanto, se descargarán los paquetes a instalar (latest) de dicho repo para su posterior instalación.
 
-Esto ejecutará el role de common en la máquina especificada en el parámetro limit y después el role determinada por el inventario de Ansible ( **scripts/ansible-playbooks/inventario** ) . Adicionalmente se puede ejecutar una determinada tarea especificada según la tag que se defina en las tasks de ese role:
+Esto ejecutará el role de common en la máquina especificada en el parámetro limit y después el role determinado. Adicionalmente se puede ejecutar una determinada tarea especificada según la tag que se defina en las tasks de ese role:
 
 `ansible-playbook -i inventario --limit <máquina> --tags <tag> sites.yaml`
 
@@ -36,7 +33,7 @@ Esto ejecutará el role de common en la máquina especificada en el parámetro l
   
 ## **Paso 3: Instalación y configuración de Docker y Harbor, Creación y configuración del Registry**
 
-Se ha creado un role de Ansible que instala Docker y sus dependencias , seguidamente lo configura para que la ruta donde crea los contenedores sea /usr/local/pr/kamino/var/lib/docker/overlay2.  Para las pruebas se puede utilizar la máquina del registry ( 192.168.112.186 ) 
+Se ha creado un role de Ansible que instala Docker y sus dependencias , seguidamente lo configura para que la ruta donde crea los contenedores sea /usr/local/pr/kamino/var/lib/docker/overlay2.  Para las pruebas se utiliza la máquina del registry ( 192.168.112.190 ) 
 
 Seguidamente, se instala Harbor cargando las imágenes de Docker forma offline y se configura mediante la creación de una CA custom la cual firma la clave privada y certificado y asigna al Nginx que levanta harbor. Se ha preconfigurado el instalador para que instale Trivy , chartmuseum y Harbor de forma offline sin que accedan a Internet salvo para descargar nuevas imágenes no presentes ( install.sh --with-trivy --with-chartmuseum ).
 
@@ -50,7 +47,7 @@ Al menos son necesarios los siguientes ficheros en la ruta roles/registry/files:
 - **daemon.json** ( Fichero de configuración de Docker para confiar en el Registry )
 - **docker-ce-offline.tar.gz** ( Fichero comprimido con las dependencias de Docker)
 - **docker-compose.yml** ( compose con el stack de Harbor )
-- **harbor-offline-installer-v2.4.2.tgz** ( Fichero comprimido con todas las imágenes de Harbor )
+- **harbor-offline-installer-v2.5.0.tgz** ( Fichero comprimido con todas las imágenes de Harbor )
 - **harbor.yml** ( Fichero que lee el instalador de harbor ( install.sh ) para arrancar el entorno por primera vez )
 - **install.sh** ( Script que lee el fichero harbor.yml y prepara el entorno de Harbor , y comprueba que Docker y docker-compose estén previamente instalados )
 - **metadata.json** ( Fichero de configuración para trivy para que no se actualice )
@@ -83,7 +80,7 @@ Añadimos de forma temporal el host al fichero de hosts:
 
 **echo "192.168.112.186 registry registry" >> /etc/hosts**
 
-Después nos logueamos contra el Registry ( usuario admin) :
+Después nos logueamos contra el Registry (usuario admin) :
 
 **docker login registry:443**
 

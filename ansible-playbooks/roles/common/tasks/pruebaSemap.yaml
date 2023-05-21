@@ -1,4 +1,4 @@
-- hosts: loadbalancer1
+- hosts: registry
 
   tasks:
     - name: "Instalamos Python 3.9"
