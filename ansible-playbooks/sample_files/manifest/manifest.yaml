@@ -7077,12 +7077,11 @@ spec:
           name: grafana-import-dashboards
 
 #   *** DESPLIEGUE DE LOCUST PARA LOAD TEST DEL FRONT-END A TRAVES DEL MANIFIESTO ***
-# ---
+
 # apiVersion: v1
 # kind: Namespace
 # metadata:
 #   name: loadtest
-# ---
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:
@@ -7107,3 +7106,4 @@ spec:
 #         args: ["-c", "while true; do locust --host http://front-end.sock-shop.svc.cluster.local -f /config/locustfile.py --clients 5 --hatch-rate 5 --num-request 100 --no-web; done"]
 #       nodeSelector:
 #         kubernetes.io/os: linux
+# ---
