@@ -80,3 +80,13 @@
       delay: 10
       changed_when: false
       
+- name: Añadimos módulos para kubectl, kubectx y kubens en los master para controlar el clúster
+  shell: |
+    ln -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl
+    /usr/local/bin/kubectl completion bash > /usr/share/bash-completion/completions/kubectl
+    chmod 644 /usr/share/bash-completion/completions/kubectl
+    git clone https://github.com/ahmetb/kubectx /opt/kubectx
+    ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+    ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+  ignore_errors: true
+  
