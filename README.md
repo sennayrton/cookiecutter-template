@@ -10,6 +10,7 @@ El objetivo al finalizar el proyecto es ser capaz de ofrecer un entorno totalmen
 En el laboratorio de CIN creamos máquinas correspondientes a nodo master/etcd, nodos worker, registry todas basadas en RHEL 8.6. En ellos se hará una instalación de kubernetes con todos sus componentes, extensiones y otras utilidades que consideremos interesantes (herramientas, lenguajes de programación, etc), con el objetivo de identificar todos los pasos y paquetes necesarios para realizar una instalación completamente offline.
 
 Esquema del código del proyecto en Git:
+```bash
 
 ├── k8s-ansible-offline
 │   ├── README.md
@@ -126,7 +127,7 @@ Esquema del código del proyecto en Git:
 │   └── scripts
 │       └── setup-host.sh
 
-
+```
 
 
 
