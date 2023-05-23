@@ -4,3 +4,5 @@
 *.db
 # ignore all .gz files
 *.gz
+# ignore all .tar files
+*.tar

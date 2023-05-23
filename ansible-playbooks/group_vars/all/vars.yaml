@@ -5,7 +5,7 @@ ansible_ssh_pass: "{{ vault_ansible_ssh_pass }}"
 registry_user: "{{ vault_registry_user }}"
 registry_pass: "{{ vault_registry_pass }}"
 
-# entorno : cambiar para instalar cada cluster
+# entorno: para instalación de distintos entornos
 entorno: pr
 
 # comun para todas las maquinas
@@ -21,6 +21,7 @@ hostname_rke2-server3: rke2-server3
 hostname_rke2-agent1: rke2-agent1
 hostname_rke2-agent2: rke2-agent2
 hostname_rke2-agent3: rke2-agent3
+hostname_registry: registry
 
 # IP's
 ip_rke2-server1: 192.168.112.183
@@ -29,14 +30,13 @@ ip_rke2-server3: 192.168.112.185
 ip_rke2-agent1: 192.168.112.186
 ip_rke2-agent2: 192.168.112.187
 ip_rke2-agent3: 192.168.112.188
+ip_registry: 192.168.112.189
 
 # Proxy Docker Hub
 proxy_docker_hub: proxy_docker_hub
 
 # Registry domain
 registry_domain: registry
-registry_hostname: registry
-registry_ip: 192.168.112.189
 
 # Registry Port
 registry_port: 443
