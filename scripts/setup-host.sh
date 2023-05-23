@@ -94,13 +94,8 @@ hostnamectl set-hostname $NODO
 #EOF
 
 cat <<EOF > /etc/hosts
-192.168.112.183 rke2-server
-192.168.112.184 rke2-agent1
-192.168.112.185 rke2-agent2
-192.168.112.186 registry
-192.168.112.187 loadbalancer1
-192.168.112.188 loadbalancer2
-192.168.112.189 vipa
+# 192.168.112.183 rke2-server1
+
 EOF
 
 #systemctl restart network.service
