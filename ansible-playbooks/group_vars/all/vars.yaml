@@ -21,8 +21,6 @@ hostname_rke2-server3: rke2-server3
 hostname_rke2-agent1: rke2-agent1
 hostname_rke2-agent2: rke2-agent2
 hostname_rke2-agent3: rke2-agent3
-# hostname_vipa: vipa
-hostname_registry: registry
 
 # IP's
 ip_rke2-server1: 192.168.112.183
@@ -31,8 +29,6 @@ ip_rke2-server3: 192.168.112.185
 ip_rke2-agent1: 192.168.112.186
 ip_rke2-agent2: 192.168.112.187
 ip_rke2-agent3: 192.168.112.188
-# ip_vipa: 192.168.112.189
-ip_registry: 192.168.112.190
 
 # Proxy Docker Hub
 proxy_docker_hub: proxy_docker_hub
@@ -40,7 +36,7 @@ proxy_docker_hub: proxy_docker_hub
 # Registry domain
 registry_domain: registry
 registry_hostname: registry
-registry_ip: 192.168.112.190
+registry_ip: 192.168.112.189
 
 # Registry Port
 registry_port: 443
@@ -51,9 +47,6 @@ harbor_admin_password: cylonb0x
 # Proxy
 proxy: "http://10.200.140.230:80"
 
-# Image versions
-image_pause_version: "3.6"
-etcd_image_version: "3.5.1-0"
 
 
 

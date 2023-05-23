@@ -40,7 +40,7 @@
 - name: Copiamos los ficheros de Harbor a /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
   become: yes
   become_user: root
-  shell: cp -pr /usr/local/{{ entorno }}/{{ user_home_dir }}/harbor/* /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/
+  shell: cp -pr /usr/local/{{ entorno }}/{{ user_home_dir }}/harbor* /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/
 
 - name: Cambiamos los permisos de /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
   file:

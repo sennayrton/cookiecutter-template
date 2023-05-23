@@ -2,7 +2,7 @@
 
 # The IP address or hostname to access admin UI and registry service.
 # DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.
-hostname: 192.168.112.190
+hostname: 192.168.112.189
 
 # http related config
 http:
@@ -190,7 +190,7 @@ _version: 2.7.1
 proxy:
   http_proxy: http://10.200.140.230:80
   https_proxy: http://10.200.140.230:80
-  no_proxy: localhost|192.168.112.190|registry
+  no_proxy: localhost|192.168.112.189|registry
   components:
     - core
     - jobservice

@@ -18,5 +18,5 @@
 
 ### 192.168.112.188	- worker3 (rke2-agent3) - Kubernetes Worker3
 
-### 192.168.112.190	- registry - Kubernetes Registry
+### 192.168.112.189	- registry - Kubernetes Registry
 
