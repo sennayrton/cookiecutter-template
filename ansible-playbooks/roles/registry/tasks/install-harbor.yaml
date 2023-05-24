@@ -40,7 +40,7 @@
 - name: Copiamos los ficheros de Harbor a /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
   become: yes
   become_user: root
-  shell: cp -pr /usr/local/{{ entorno }}/{{ user_home_dir }}/harbor/* /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/
+  shell: cp -pr /usr/local/{{ entorno }}/{{ user_home_dir }}/harbor/* /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/ 
 
 - name: Cambiamos los permisos de /usr/local/{{ entorno }}/{{ user_home_dir }}/registry
   file:
@@ -98,17 +98,17 @@
     chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
 
 - name: Creamos el certificado de la CA custom en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
-  command: openssl req -x509 -new -nodes -sha512 -days 3650 -subj "/C=ES/ST=Madrid/L=Madrid/O=GMV/OU=CIN/CN=registry.cin" -key ca.key -out ca.crt
+  command: openssl req -x509 -new -nodes -sha512 -days 3650 -subj "/C=ES/ST=Madrid/L=Madrid/O=GMV/OU=CIN/CN=registry" -key ca.key -out ca.crt
   args:
     chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
 
 - name: Creamos una clave privada para el Registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
-  command: openssl genrsa -out registry.cin.key 4096
+  command: openssl genrsa -out registry.key 4096
   args:
     chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
 
 - name: Generamos un CSR del Registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
-  command: openssl req -sha512 -new -subj "/C=ES/ST=Madrid/L=Madrid/O=GMV/OU=CIN/CN=registry.cin" -key registry.cin.key -out registry.cin.csr
+  command: openssl req -sha512 -new -subj "/C=ES/ST=Madrid/L=Madrid/O=GMV/OU=CIN/CN=registry" -key registry.key -out registry.csr
   args:
     chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
 
@@ -121,7 +121,7 @@
     mode: '0740'
 
 - name: Generamos el certificado del Registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
-  command: openssl x509 -req -sha512 -days 365 -extfile v3.ext -CA ca.crt -CAkey ca.key -CAcreateserial -in registry.cin.csr -out registry.cin.crt
+  command: openssl x509 -req -sha512 -days 365 -extfile v3.ext -CA ca.crt -CAkey ca.key -CAcreateserial -in registry.csr -out registry.crt
   args:
     chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs
 
@@ -136,8 +136,8 @@
 
 - name: Copiamos el certificado del registry en la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/
   copy:
-    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.cin.crt"
-    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cin.crt"
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.crt"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.crt"
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: '0640'
@@ -145,49 +145,49 @@
 
 - name: Copiamos la clave privada del registry en  la ruta /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/
   copy:
-    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.cin.key"
-    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cin.key"
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.key"
+    dest: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.key"
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: '0440'
     remote_src: yes
 
 - name: Convertimos el certificado del registry a .cert para que Docker lo lea como un certificado cliente
-  command: openssl x509 -inform PEM -in registry.cin.crt -out registry.cin.cert
+  command: openssl x509 -inform PEM -in registry.crt -out registry.cert
   args:
     chdir: /usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/
 
-- name: Creamos el directorio /etc/docker/certs.d/registry.cin/ si no existe
+- name: Creamos el directorio /etc/docker/certs.d/registry/ si no existe
   file:
-    path: "/etc/docker/certs.d/registry.cin/"
+    path: "/etc/docker/certs.d/registry/"
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: u=rwx,g=rwx,o=r
     recurse: yes
     state: directory
 
-- name: Copiamos el certificado del Registry a la ruta /etc/docker/certs.d/registry.cin/
+- name: Copiamos el certificado del Registry a la ruta /etc/docker/certs.d/registry/
   copy:
-    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cin.cert"
-    dest: "/etc/docker/certs.d/registry.cin/registry.cin.cert"
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cert"
+    dest: "/etc/docker/certs.d/registry/registry.cert"
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: '0640'
     remote_src: yes
 
-- name: Copiamos la clave privada del Registry a la ruta /etc/docker/certs.d/registry.cin/
+- name: Copiamos la clave privada del Registry a la ruta /etc/docker/certs.d/registry/
   copy:
-    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.cin.key"
-    dest: "/etc/docker/certs.d/registry.cin/registry.cin.key"
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/data/cert/registry.key"
+    dest: "/etc/docker/certs.d/registry/registry.key"
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: '0440'
     remote_src: yes
 
-- name: Copiamos la CA custom a la ruta /etc/docker/certs.d/registry.cin/
+- name: Copiamos la CA custom a la ruta /etc/docker/certs.d/registry/
   copy:
     src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/ca.crt"
-    dest: "/etc/docker/certs.d/registry.cin/ca.crt"
+    dest: "/etc/docker/certs.d/registry/ca.crt"
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: '0640'
@@ -195,8 +195,8 @@
 
 - name: Copiamos el certificado del Registry a la ruta /etc/pki/ca-trust/source/anchors/
   copy:
-    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.cin.crt"
-    dest: "/etc/pki/ca-trust/source/anchors/registry.cin.crt"
+    src: "/usr/local/{{ entorno }}/{{ user_home_dir }}/registry/certs/registry.crt"
+    dest: "/etc/pki/ca-trust/source/anchors/registry.crt"
     owner: "{{ user_name }}"
     group: "{{ user_group }}"
     mode: '0640'
@@ -236,11 +236,7 @@
 - name: Instalamos Harbor con Trivy y Chartmuseum 
   become: yes
   become_user: root
-  script: files/install-{{ entorno }}.sh --with-trivy --with-chartmuseum
-  register: harbor_install
-
-- debug: msg="{{ harbor_install.stdout }}"
-  ignore_errors: no
+  command: sh /usr/local/pr/kamino/registry/install.sh --with-trivy --with-chartmuseum
 
 - name: Paramos Harbor para actualizar las rutas
   command: docker compose down

@@ -70,7 +70,12 @@
   ansible.builtin.template:
     src: hosts.j2
     dest: /etc/hosts 
-    
+
+- name: Modificamos entradas de sysctl para kubernetes
+  ansible.builtin.template:
+    src: 99-kubernetes-cri.conf.j2
+    dest: /etc/sysctl.d/
+
 - name: Deshabilitamos la SWAP porque k8s no puede funcionar con swap habilitado (1/2)
   ansible.builtin.shell: swapoff -a
 
