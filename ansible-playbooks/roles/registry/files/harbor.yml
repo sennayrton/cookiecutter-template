@@ -76,8 +76,8 @@ trivy:
   # You might want to enable this flag in test or CI/CD environments to avoid GitHub rate limiting issues.
   # If the flag is enabled you have to download the `trivy-offline.tar.gz` archive manually, extract `trivy.db` and
   # `metadata.json` files and mount them in the `/home/scanner/.cache/trivy/db` path.
-  skip_update: false
-  offline_scan: false
+  skip_update: true
+  offline_scan: true
   #
   # insecure The flag to skip verifying registry certificate
   insecure: false
@@ -195,10 +195,10 @@ proxy:
     - core
     - jobservice
 
-metric:
-  enabled: false
-  port: 9090
-  path: /metrics
+#metric:
+#  enabled: false
+#  port: 9090
+#  path: /metrics
 
 # Trace related config
 # only can enable one trace provider(jaeger or otel) at the same time,
