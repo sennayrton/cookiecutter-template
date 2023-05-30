@@ -10,9 +10,18 @@ En el laboratorio creamos máquinas correspondientes a nodo master/etcd, nodos w
 ### Entregables
 Como resultado de este proyecto tendremos:
 Repositorio en GitHub con el código fuente => https://github.com/sennayrton/k8s-ansible-offline
+
+
 Plantilla de Cookiecutter para la personalización del despliegue => https://github.com/sennayrton/cookiecutter-template
+
+
 Demostración del clúster, recursos y funcionalidades => Frontend con servicios levantado, monitorización con Prometheus y Grafana, pruebas de carga del frontend con Locust y gestión del clúster con Rancher.
+
+
 Documento con el análisis y diseño propuestos, así como con los pasos seguidos para la elaboración.
+
+
+
 
 Esquema del código del proyecto en Git:
 ```bash
