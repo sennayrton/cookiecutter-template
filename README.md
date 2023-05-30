@@ -5,7 +5,14 @@ Este proyecto tiene como objetivo el diseño y construcción de una instalación
 
 El objetivo al finalizar el proyecto es ser capaz de ofrecer un entorno totalmente funcional de laboratorio en el que se puedan hacer pruebas que conlleven riesgos y donde se puedan probar todo tipo de instalaciones de aplicativos para seguir aprendiendo sobre dicha plataforma, por tanto, un entorno de laboratorio es su principal campo de aplicación.
 
-En el laboratorio de CIN creamos máquinas correspondientes a nodo master/etcd, nodos worker, registry todas basadas en RHEL 8.6. En ellos se hará una instalación de kubernetes con todos sus componentes, extensiones y otras utilidades que consideremos interesantes (herramientas, lenguajes de programación, etc), con el objetivo de identificar todos los pasos y paquetes necesarios para realizar una instalación completamente offline.
+En el laboratorio creamos máquinas correspondientes a nodo master/etcd, nodos worker, registry todas basadas en RHEL 8.6. En ellos se hará una instalación de kubernetes con todos sus componentes, extensiones y otras utilidades que consideremos interesantes (herramientas, lenguajes de programación, etc), con el objetivo de identificar todos los pasos y paquetes necesarios para realizar una instalación completamente offline.
+
+### Entregables
+Como resultado de este proyecto tendremos:
+Repositorio en GitHub con el código fuente => https://github.com/sennayrton/k8s-ansible-offline
+Plantilla de Cookiecutter para la personalización del despliegue => https://github.com/sennayrton/cookiecutter-template
+Demostración del clúster, recursos y funcionalidades => Frontend con servicios levantado, monitorización con Prometheus y Grafana, pruebas de carga del frontend con Locust y gestión del clúster con Rancher.
+Documento con el análisis y diseño propuestos, así como con los pasos seguidos para la elaboración.
 
 Esquema del código del proyecto en Git:
 ```bash
@@ -124,9 +131,3 @@ Esquema del código del proyecto en Git:
 │       └── setup-host.sh
 
 ```
-
-
-
-
-
-
