@@ -1,0 +1,46 @@
+[tool]
+
+[tool.poetry]
+name = "k8s_ansible_offline"
+version = "0.0.0"
+homepage = "https://github.com/sennayrton/k8s-ansible-offline"
+description = "Este proyecto tiene como objetivo el diseño y construcción de una instalación automatizada de un clúster de Kubernetes, con aprovisionamiento automático, en un entorno de alta seguridad, en el que la conectividad a Internet es limitada o nula."
+authors = ["Sergio <picazo63@gmail.com>"]
+readme = "README.md"
+classifiers=[
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+]
+include = [
+    "k8s_ansible_offline/py.typed"
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+importlib_metadata = "^3.4.0"
+
+[tool.poetry.dev-dependencies]
+
+
+
+
+
+
+
+[tool.black]
+line-length=100
+
+[tool.pylint.reports]
+output-format="colorized"
+reports="y"
+include-ids="yes"
+msg-template="{msg_id}:{line:3d},{column}: {obj}: {msg}"
+
+[tool.pytest.ini_options]
+addopts = "--cov=k8s_ansible_offline --cov-branch --cov-report term-missing  -vv --color=yes --cov-fail-under 100"
+python_files = "tests.py test_*.py *_tests.py"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
