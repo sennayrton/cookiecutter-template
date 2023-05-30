@@ -14,8 +14,6 @@ Esquema del código del proyecto en Git:
 │   ├── README.md
 │   ├── ansible-playbooks
 │   │   ├── README.md
-│   │   ├── __pycache__
-│   │   │   └── locustfile.cpython-39.pyc
 │   │   ├── ansible.cfg
 │   │   ├── group_vars
 │   │   │   └── all
