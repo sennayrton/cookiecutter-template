@@ -4785,7 +4785,7 @@ data:
     {
       "name": "prometheus",
       "type": "prometheus",
-      "url": "http://prometheus:9090",
+      "url": "http://192.168.112.186:31090/",
       "access": "proxy",
       "basicAuth": false
     }
