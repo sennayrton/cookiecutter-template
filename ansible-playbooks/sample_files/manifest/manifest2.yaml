@@ -1,5 +1,3 @@
-#   *** DESPLIEGUE DE IMPORTACIÓN DE DASHBOARDS DE GRAFANA A TRAVES DEL MANIFIESTO ***
-
 apiVersion: batch/v1
 kind: Job
 metadata:
