@@ -26,117 +26,124 @@ Documento con el análisis y diseño propuestos, así como con los pasos seguido
 Esquema del código del proyecto en Git:
 ```bash
 
-├── k8s-ansible-offline
-│   ├── README.md
-│   ├── ansible-playbooks
-│   │   ├── README.md
-│   │   ├── ansible.cfg
-│   │   ├── group_vars
-│   │   │   └── all
-│   │   │       ├── rke2_agents.yml
-│   │   │       ├── rke2_servers.yml
-│   │   │       ├── vars.yaml
-│   │   │       └── vault.yaml
-│   │   ├── hosts.ini
-│   │   ├── inventario
-│   │   ├── locustfile.py
-│   │   ├── requirements.yml
-│   │   ├── roles
-│   │   │   ├── common
-│   │   │   │   ├── tasks
-│   │   │   │   │   ├── common-packet.yaml
-│   │   │   │   │   ├── main.yaml
-│   │   │   │   │   ├── pruebaSemap.yaml
-│   │   │   │   │   ├── python-packet.yaml
-│   │   │   │   │   └── setup.yaml
-│   │   │   │   ├── templates
-│   │   │   │   │   ├── almalinux.repo.j2
-│   │   │   │   │   ├── docker-ce.repo.j2
-│   │   │   │   │   ├── hosts.j2
-│   │   │   │   │   ├── kernel_modules.conf.j2
-│   │   │   │   │   └── kubernetes.repo.j2
-│   │   │   │   └── vars
-│   │   │   │       └── main.yaml
-│   │   │   ├── registry
-│   │   │   │   ├── files
-│   │   │   │   │   ├── daemon.json
-│   │   │   │   │   ├── docker-compose.yml
-│   │   │   │   │   ├── harbor-offline-installer-v2.5.0.tar.gz
-│   │   │   │   │   ├── harbor.yml
-│   │   │   │   │   ├── install.sh
-│   │   │   │   │   ├── metadata.json
-│   │   │   │   │   ├── registry.cert
-│   │   │   │   │   └── trivy.db
-│   │   │   │   ├── tasks
-│   │   │   │   │   ├── install-docker.yaml
-│   │   │   │   │   ├── install-harbor.yaml
-│   │   │   │   │   └── main.yml
-│   │   │   │   ├── templates
-│   │   │   │   │   ├── daemon.json.j2
-│   │   │   │   │   ├── docker-compose.yml.j2
-│   │   │   │   │   ├── docker.service.j2
-│   │   │   │   │   └── v3.ext.j2
-│   │   │   │   └── vars
-│   │   │   │       └── main.yml
-│   │   │   ├── rke2_agent
-│   │   │   │   ├── defaults
-│   │   │   │   │   └── main.yml
-│   │   │   │   ├── tasks
-│   │   │   │   │   └── main.yml
-│   │   │   │   ├── templates
-│   │   │   │   │   └── rke2-agent.j2
-│   │   │   │   └── vars
-│   │   │   │       └── main.yml
-│   │   │   ├── rke2_common
-│   │   │   │   ├── defaults
-│   │   │   │   │   └── main.yml
-│   │   │   │   ├── handlers
-│   │   │   │   │   └── main.yml
-│   │   │   │   ├── tasks
-│   │   │   │   │   ├── add-audit-policy-config.yml
-│   │   │   │   │   ├── add-manifest-addons.yml
-│   │   │   │   │   ├── add-registry-config.yml
-│   │   │   │   │   ├── cis-hardening.yml
-│   │   │   │   │   ├── config.yml
-│   │   │   │   │   ├── images_tarball_install.yml
-│   │   │   │   │   ├── iptables_rules.yml
-│   │   │   │   │   ├── main.yml
-│   │   │   │   │   ├── network_manager_fix.yaml
-│   │   │   │   │   ├── previous_install.yml
-│   │   │   │   │   ├── rpm_install.yml
-│   │   │   │   │   └── tarball_install.yml
-│   │   │   │   └── vars
-│   │   │   │       └── main.yml
-│   │   │   ├── rke2_server
-│   │   │   │   ├── defaults
-│   │   │   │   │   └── main.yml
-│   │   │   │   ├── tasks
-│   │   │   │   │   ├── first_server.yml
-│   │   │   │   │   ├── main.yml
-│   │   │   │   │   └── other_servers.yml
-│   │   │   │   ├── templates
-│   │   │   │   │   └── rke2-server.j2
-│   │   │   │   └── vars
-│   │   │   │       └── main.yml
-│   │   │   └── semaphore
-│   │   │       ├── tasks
-│   │   │       │   ├── install-semaphore.yaml
-│   │   │       │   ├── launch-semaphore.yaml
-│   │   │       │   └── main.yaml
-│   │   │       ├── templates
-│   │   │       │   ├── docker-compose.yml.j2
-│   │   │       │   └── docker.servicelocalhost.j2
-│   │   │       └── vars
-│   │   │           └── main.yml
-│   │   ├── sample_files
-│   │   │   ├── audit-policy.yaml
-│   │   │   ├── manifest
-│   │   │   │   ├── manifest.yaml
-│   │   │   │   └── manifest2.yaml
-│   │   │   └── registries.yaml
-│   │   ├── site.yml
-│   │   └── sites.yaml
-│   └── scripts
-│       └── setup-host.sh
+└── k8s-ansible-offline
+    ├── README.md
+    ├── ansible-playbooks
+    │   ├── README.md
+    │   ├── ansible.cfg
+    │   ├── group_vars
+    │   │   └── all
+    │   │       ├── rke2_agents.yml
+    │   │       ├── rke2_servers.yml
+    │   │       ├── vars.yaml
+    │   │       └── vault.yaml
+    │   ├── hosts.ini
+    │   ├── inventario
+    │   ├── locustfile.py
+    │   ├── requirements.yml
+    │   ├── roles
+    │   │   ├── common
+    │   │   │   ├── tasks
+    │   │   │   │   ├── common-packet.yaml
+    │   │   │   │   ├── main.yaml
+    │   │   │   │   ├── pruebaSemap.yaml
+    │   │   │   │   ├── python-packet.yaml
+    │   │   │   │   └── setup.yaml
+    │   │   │   ├── templates
+    │   │   │   │   ├── 99-kubernetes-cri.conf.j2
+    │   │   │   │   ├── almalinux.repo.j2
+    │   │   │   │   ├── docker-ce.repo.j2
+    │   │   │   │   ├── hosts.j2
+    │   │   │   │   ├── kernel_modules.conf.j2
+    │   │   │   │   └── kubernetes.repo.j2
+    │   │   │   └── vars
+    │   │   │       └── main.yaml
+    │   │   ├── registry
+    │   │   │   ├── files
+    │   │   │   │   ├── daemon.json
+    │   │   │   │   ├── docker-compose.yml
+    │   │   │   │   ├── harbor-offline-installer-v2.5.0.tgz
+    │   │   │   │   ├── harbor.yml
+    │   │   │   │   ├── install.sh
+    │   │   │   │   ├── registry.cert
+    │   │   │   │   └── trivy.db
+    │   │   │   ├── tasks
+    │   │   │   │   ├── install-docker.yaml
+    │   │   │   │   ├── install-harbor.yaml
+    │   │   │   │   └── main.yml
+    │   │   │   ├── templates
+    │   │   │   │   ├── config.json.j2
+    │   │   │   │   ├── daemon.json.j2
+    │   │   │   │   ├── docker-compose.yml.j2
+    │   │   │   │   ├── docker.service.j2
+    │   │   │   │   ├── http-proxy.conf.j2
+    │   │   │   │   ├── https-proxy.conf.j2
+    │   │   │   │   └── v3.ext.j2
+    │   │   │   └── vars
+    │   │   │       └── main.yml
+    │   │   ├── rke2_agent
+    │   │   │   ├── defaults
+    │   │   │   │   └── main.yml
+    │   │   │   ├── tasks
+    │   │   │   │   └── main.yml
+    │   │   │   ├── templates
+    │   │   │   │   └── rke2-agent.j2
+    │   │   │   └── vars
+    │   │   │       └── main.yml
+    │   │   ├── rke2_common
+    │   │   │   ├── defaults
+    │   │   │   │   └── main.yml
+    │   │   │   ├── handlers
+    │   │   │   │   └── main.yml
+    │   │   │   ├── tasks
+    │   │   │   │   ├── add-audit-policy-config.yml
+    │   │   │   │   ├── add-manifest-addons.yml
+    │   │   │   │   ├── add-registry-config.yml
+    │   │   │   │   ├── cis-hardening.yml
+    │   │   │   │   ├── config.yml
+    │   │   │   │   ├── images_tarball_install.yml
+    │   │   │   │   ├── iptables_rules.yml
+    │   │   │   │   ├── main.yml
+    │   │   │   │   ├── network_manager_fix.yaml
+    │   │   │   │   ├── previous_install.yml
+    │   │   │   │   ├── rpm_install.yml
+    │   │   │   │   └── tarball_install.yml
+    │   │   │   └── vars
+    │   │   │       └── main.yml
+    │   │   ├── rke2_server
+    │   │   │   ├── defaults
+    │   │   │   │   └── main.yml
+    │   │   │   ├── tasks
+    │   │   │   │   ├── first_server.yml
+    │   │   │   │   ├── main.yml
+    │   │   │   │   └── other_servers.yml
+    │   │   │   ├── templates
+    │   │   │   │   └── rke2-server.j2
+    │   │   │   └── vars
+    │   │   │       └── main.yml
+    │   │   └── semaphore
+    │   │       ├── tasks
+    │   │       │   ├── install-semaphore.yaml
+    │   │       │   ├── launch-semaphore.yaml
+    │   │       │   └── main.yaml
+    │   │       ├── templates
+    │   │       │   ├── docker-compose.yml.j2
+    │   │       │   └── docker.servicelocalhost.j2
+    │   │       └── vars
+    │   │           └── main.yml
+    │   ├── sample_files
+    │   │   ├── audit-policy.yaml
+    │   │   ├── manifest
+    │   │   │   ├── manifest-grafana-dashboards.yaml
+    │   │   │   ├── manifest.yaml
+    │   │   │   ├── wikijs-config.yaml
+    │   │   │   ├── wikijs-deployment.yaml
+    │   │   │   ├── wikijs-secret.yaml
+    │   │   │   └── wikijs-service.yaml
+    │   │   └── registries.yaml
+    │   ├── site.yml
+    │   └── sites.yaml
+    └── scripts
+        └── setup-host.sh
 
 ```

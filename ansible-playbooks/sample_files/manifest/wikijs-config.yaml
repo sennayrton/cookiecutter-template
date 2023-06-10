@@ -1,0 +1,67 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  namespace: wikijs
+spec:
+  selector:
+    app: mariadb
+  ports:
+  - name: mariadb
+    protocol: TCP
+    port: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: wikijs
+  labels:
+    app: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:latest
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: PASSWORD
+        - name: MARIADB_ROOT_HOST
+          value: "%"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mariadb-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mariadb-storage
+        hostPath:
+          path: /var/wikijs
+          type: DirectoryOrCreate
