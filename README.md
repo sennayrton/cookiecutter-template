@@ -28,6 +28,7 @@ Esquema del código del proyecto en Git:
 
 └── k8s-ansible-offline
     ├── README.md
+    ├── Reporte-LoadTestQueries-Frontend.html
     ├── ansible-playbooks
     │   ├── README.md
     │   ├── ansible.cfg
