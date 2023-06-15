@@ -1,7 +1,5 @@
 # Inventario Laboratorio RHEL 8.6
 
-## Máquina física: 192.168.111.38
-
 ## Máquinas virtuales para el clúster:
 
 ## *IP - Hostname - Rol*
